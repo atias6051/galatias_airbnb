@@ -64,32 +64,62 @@ router.get('/myspots',async(req,res,next)=>{
 
 //get Spot by Id
 router.get('/:spotId',async(req,res,next)=>{
-    const spot = await Spot.findByPk(req.params.spotId,{
-        include: [
-            {
-                model: Review,
-                attributes:[]
-            },
-            {
-                model: SpotImage,
-            },
-            {
-                model: User,
-                as: 'Owner',
-            }
-        ],
-        attributes: {
-            include: [
-                [sequelize.fn('COUNT',sequelize.col('stars')), 'numReviews'],
-                [sequelize.fn('AVG',sequelize.col('stars')), 'avgStarRating']
-            ]
-        },
-        group: ['Spot.id']
-    })
+    // const spot = await Spot.findByPk(req.params.spotId,{
+    //     include: [
+    //         {
+    //             model: Review,
+    //             attributes:[]
+    //         },
+    //         {
+    //             model: SpotImage,
+    //         },
+    //         {
+    //             model: User,
+    //             as: 'Owner',
+    //         }
+    //     ],
+    //     attributes: {
+    //         include: [
+    //             [sequelize.fn('COUNT',sequelize.col('stars')), 'numReviews'],
+    //             [sequelize.fn('AVG',sequelize.col('stars')), 'avgStarRating']
+    //         ]
+    //     },
+    // })
+
+    let spot = await Spot.findByPk(req.params.spotId)
+    //error
     if(!spot){
         res.statusCode = 404
         res.json({messgae: "Spot couldn't be found",statusCode: 404})
     }
+
+    spot = spot.toJSON()
+
+    let avg = await Review.findAll({
+        where: {'spotId': spot.id},
+        attributes: [
+            [Sequelize.fn('COUNT',Sequelize.col('stars')),'numReviews'],
+            [Sequelize.fn('AVG',Sequelize.col('stars')),'avgStarRating']
+        ]
+    })
+    avg = avg[0].toJSON()
+    spot.numReviews = avg.numReviews
+    spot.avgStarRating = avg.avgStarRating
+
+    let images = await SpotImage.findAll({where:{'spotId': spot.id}})
+    let spotImages = []
+    for(let img of images){
+        spotImages.push(img.toJSON())
+    }
+    spot.SpotImages = spotImages
+
+    let owner = await User.findOne({
+        where:{'id': spot.ownerId},
+        attributes: ['id','firstName','lastName']
+    })
+    spot.owner = owner.toJSON()
+
+
     res.json(spot)
 })
 
