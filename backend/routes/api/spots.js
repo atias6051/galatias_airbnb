@@ -136,7 +136,7 @@ router.get('/:spotId',async(req,res,next)=>{
     res.json(spot)
 })
 
-router.post('/',async(req,res,next)=>{
+// router.post('/',async(req,res,next)=>{
 
-})
+// })
 module.exports = router;
