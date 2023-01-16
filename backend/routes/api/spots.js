@@ -18,7 +18,6 @@ router.get('/',async(req,res,next)=>{
             },
             attributes: [[Sequelize.fn('AVG',Sequelize.col('stars')),'avgRating']]
         })
-        console.log(avg)
         const url = await SpotImage.findOne({
             where:{
                 spotId: spot.id,
@@ -53,7 +52,7 @@ router.get('/',async(req,res,next)=>{
 
 
 router.get('/test',async(req,res,next)=>{
-    console.log(req.user)
+    console.log(req)
     // console.log(req.user)
     res.json({message:'check terminal'})
 })
