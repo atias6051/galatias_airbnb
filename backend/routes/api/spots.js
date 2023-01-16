@@ -32,49 +32,7 @@ router.get('/',async(req,res,next)=>{
     }
     res.json(spotsList)
 })
-// router.get('/',async(req,res,next)=>{
-    //     const spots = await Spot.findAll({})
-//     let spotsObj = {Spots: []}
-//     for(let spot of spots){
-//         let newSpot = {...spot}
-//         const avg = await Review.findAll({
-//             where:{
-//                 spotId: spot.id,
-//             },
-//             attributes: [[Sequelize.fn('AVG',Sequelize.col('stars')),'avgRating']]
-//         })
-//         const url = await SpotImage.findOne({
-    //             where:{
-        //                 spotId: spot.id,
-        //                 preview: true
-//             },
-//             attributes: ['url']
-//         })
-//         newSpot.dataValues.avgRating = avg[0].dataValues.avgRating
-//         newSpot.dataValues.previewImage = url.dataValues.url
 
-//         spotsObj.Spots.push(newSpot.dataValues)
-//     }
-//     res.json(spotsObj)
-// })
-
-// router.get('/',async(req,res,next)=>{
-//     const spots = await Spot.findAll({
-//         include:[{
-//             model: SpotImage,
-//             as: 'previewImage',
-//             where: {
-//                 preview: true
-//             },
-//             attributes: ['url']
-//         },{
-    //             model: Review,
-    //             attributes: [[Sequelize.fn('AVG',Sequelize.col('stars')),'avgRating']]
-    //         }],
-    //         group: ['Spot.id']
-    //     })
-    //     res.json(spots)
-    // })
 
 // Get all Spots owned by the Current User
 router.get('/myspots',async(req,res,next)=>{
@@ -127,12 +85,10 @@ router.get('/:spotId',async(req,res,next)=>{
             ]
         },
     })
-    // console.log(spot.toJSON())
     if(!spot){
         res.statusCode = 404
         res.json({messgae: "Spot couldn't be found",statusCode: 404})
     }
-    //dsd/fds/fsf/dds/g//dsgfs/gfs/sfg/sf/hg/ghdg/ghs/
     res.json(spot)
 })
 
