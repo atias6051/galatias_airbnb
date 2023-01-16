@@ -43,6 +43,13 @@ router.post(
     }
 );
 
+router.get('/myprofile', requireAuth, async(req,res,next)=>{
+  const {user} = req
+  if(!user){
+    res.json({user: null})
+  }
+  res.json(user)
+})
 
 
 

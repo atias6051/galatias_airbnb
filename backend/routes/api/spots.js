@@ -35,7 +35,7 @@ router.get('/',async(req,res,next)=>{
 
 
 // Get all Spots owned by the Current User
-router.get('/myspots',async(req,res,next)=>{
+router.get('/myspots', requireAuth, async(req,res,next)=>{
     const spots = await Spot.findAll({
         where: {'ownerId': req.user.id},
         include:{
@@ -43,6 +43,10 @@ router.get('/myspots',async(req,res,next)=>{
             where: {'preview': true}
         }
     })
+    if(!spots.length){
+        res.statusCode = 404
+        res.json({message: "You owen no Spots"})
+    }
     let spotsList = []
     for(let spot of spots){
         let jspot = spot.toJSON()
@@ -64,27 +68,6 @@ router.get('/myspots',async(req,res,next)=>{
 
 //get Spot by Id
 router.get('/:spotId',async(req,res,next)=>{
-    // const spot = await Spot.findByPk(req.params.spotId,{
-    //     include: [
-    //         {
-    //             model: Review,
-    //             attributes:[]
-    //         },
-    //         {
-    //             model: SpotImage,
-    //         },
-    //         {
-    //             model: User,
-    //             as: 'Owner',
-    //         }
-    //     ],
-    //     attributes: {
-    //         include: [
-    //             [sequelize.fn('COUNT',sequelize.col('stars')), 'numReviews'],
-    //             [sequelize.fn('AVG',sequelize.col('stars')), 'avgStarRating']
-    //         ]
-    //     },
-    // })
 
     let spot = await Spot.findByPk(req.params.spotId)
     //error
@@ -92,7 +75,6 @@ router.get('/:spotId',async(req,res,next)=>{
         res.statusCode = 404
         res.json({messgae: "Spot couldn't be found",statusCode: 404})
     }
-
     spot = spot.toJSON()
 
     let avg = await Review.findAll({
@@ -118,7 +100,6 @@ router.get('/:spotId',async(req,res,next)=>{
         attributes: ['id','firstName','lastName']
     })
     spot.owner = owner.toJSON()
-
 
     res.json(spot)
 })
