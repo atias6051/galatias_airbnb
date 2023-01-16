@@ -84,6 +84,7 @@ router.get('/:spotId',async(req,res,next)=>{
                 [sequelize.fn('AVG',sequelize.col('stars')), 'avgStarRating']
             ]
         },
+        group: ['Spot.id']
     })
     if(!spot){
         res.statusCode = 404
