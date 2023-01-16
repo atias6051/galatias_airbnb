@@ -7,6 +7,24 @@ const { User,Spot,SpotImage,Review, sequelize, Sequelize } = require('../../db/m
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+const authorize = async(req,res,next) =>{
+    let spot = await Spot.findByPk(req.params.spotId)
+    if(!spot){
+        res.statusCode = 404
+        res.json({message: "Spot couldn't be found",statusCode: 404})
+    }
+
+    if(spot.ownerId !== req.user.id){
+        res.statusCode = 403
+        return res.json({
+            message: "Forbidden",
+            statusCode: 403
+        })
+    }
+
+    return next()
+}
+
 //Get all spots
 router.get('/',async(req,res,next)=>{
     const spots = await Spot.findAll()
@@ -148,22 +166,9 @@ router.post('/',requireAuth ,async(req,res,next)=>{
     res.json(returnSpot)
 })
 
-router.post('/:spotId/images', requireAuth, async(req,res,next)=>{
+router.post('/:spotId/images', requireAuth, authorize, async(req,res,next)=>{
     const {url, preview} = req.body
     if(!url) res.json({message: "Please provide image url",statusCode: 404})
-    let spot = await Spot.findByPk(req.params.spotId)
-    if(!spot){
-        res.statusCode = 404
-        res.json({message: "Spot couldn't be found",statusCode: 404})
-    }
-    spot = spot.toJSON()
-    if(spot.ownerId !== req.user.id){
-        res.statusCode = 403
-        res.json({
-            message: "Forbidden",
-            statusCode: 403
-          })
-    }
     if(preview == true){
         let currPreview = await SpotImage.findOne({where:{
             'spotId': req.params.spotId,
@@ -179,6 +184,25 @@ router.post('/:spotId/images', requireAuth, async(req,res,next)=>{
     const spotImg = await SpotImage.findOne({where:{'url': url}})
     res.statusCode = 200
     res.json(spotImg)
+})
+
+router.put('/:spotId', requireAuth, authorize, async(req,res,next)=>{
+
+    const {address,city,state,country,lat,lng,name,description,price} = req.body
+    let spot = await Spot.findByPk(req.params.spotId)
+
+    if(address) spot.address = address
+    if(city) spot.city = city
+    if(state) spot.state = state
+    if(country) spot.country = country
+    if(lat) spot.lat = lat
+    if(lng) spot.lng = lng
+    if(name) spot.name = name
+    if(description) spot.description = description
+    if(price) spot.price = price
+
+    await spot.save()
+    res.json(spot)
 })
 
 module.exports = router;
