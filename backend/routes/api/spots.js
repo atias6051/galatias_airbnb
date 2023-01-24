@@ -127,10 +127,16 @@ router.get('/:spotId',async(req,res,next)=>{
             ]
         },
     })
+    // console.log(spot.toJSON())
+    if(!spot){
+        res.statusCode = 404
+        res.json({messgae: "Spot couldn't be found",statusCode: 404})
+    }
+    //dsd/fds/fsf/dds/g//dsgfs/gfs/sfg/sf/hg/ghdg/ghs/
     res.json(spot)
 })
 
-router.post('/',async(req,res,next)=>{
+// router.post('/',async(req,res,next)=>{
 
-})
+// })
 module.exports = router;
