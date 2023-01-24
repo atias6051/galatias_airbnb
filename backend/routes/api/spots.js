@@ -6,15 +6,10 @@ const { User,Spot,SpotImage,Review, sequelize, Sequelize } = require('../../db/m
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-// const review = require('../../db/models/review');
+
 //Get all spots
 router.get('/',async(req,res,next)=>{
-    const spots = await Spot.findAll({
-        include:{
-                model: SpotImage,
-                where: {'preview': true}
-            }
-    })
+    const spots = await Spot.findAll()
     let spotsList = []
     for(let spot of spots){
         let jspot = spot.toJSON()
@@ -23,11 +18,19 @@ router.get('/',async(req,res,next)=>{
             where: {'spotId': jspot.id},
             attributes: [[Sequelize.fn('AVG',Sequelize.col('stars')),'avgRating']]
         })
-        console.log(avg[0].toJSON())
-        jspot.avgRating = avg[0].toJSON().avgRating
+        jspot.avgRating = avg[0].toJSON().avgRating || 0
 
-        jspot.previewImage = jspot.SpotImages[0].url
-        delete jspot.SpotImages
+        let previewImage = await SpotImage.findOne({
+            where:{
+                'spotId':jspot.id,
+                'preview': true
+            }
+        })
+        if(previewImage){
+            previewImage = previewImage.toJSON()
+            jspot.previewImage = previewImage.url
+        }
+
         spotsList.push(jspot)
     }
     res.json(spotsList)
@@ -35,18 +38,15 @@ router.get('/',async(req,res,next)=>{
 
 
 // Get all Spots owned by the Current User
-router.get('/myspots', requireAuth, async(req,res,next)=>{
+router.get('/current', requireAuth, async(req,res,next)=>{
     const spots = await Spot.findAll({
-        where: {'ownerId': req.user.id},
-        include:{
-            model: SpotImage,
-            where: {'preview': true}
-        }
+        where: {'ownerId': req.user.id}
     })
     if(!spots.length){
         res.statusCode = 404
         res.json({message: "You owen no Spots"})
     }
+
     let spotsList = []
     for(let spot of spots){
         let jspot = spot.toJSON()
@@ -56,10 +56,19 @@ router.get('/myspots', requireAuth, async(req,res,next)=>{
             attributes: [[Sequelize.fn('AVG',Sequelize.col('stars')),'avgRating']]
         })
         console.log(avg[0].toJSON())
-        jspot.avgRating = avg[0].toJSON().avgRating
+        jspot.avgRating = avg[0].toJSON().avgRating || 0
 
-        jspot.previewImage = jspot.SpotImages[0].url
-        delete jspot.SpotImages
+        let previewImage = await SpotImage.findOne({
+            where:{
+                'spotId':jspot.id,
+                'preview': true
+            }
+        })
+        if(previewImage){
+            previewImage = previewImage.toJSON()
+            jspot.previewImage = previewImage.url
+        }
+
         spotsList.push(jspot)
     }
     res.json(spotsList)
@@ -139,9 +148,4 @@ router.post('/',requireAuth ,async(req,res,next)=>{
     res.json(returnSpot)
 })
 
-// function validateSpot(body){
-//     const required = []
-//     const errors = []
-//     const keys = Object.key
-// }
 module.exports = router;
