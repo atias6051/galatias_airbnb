@@ -6,7 +6,7 @@ const { User,Spot,SpotImage,Review, sequelize, Sequelize } = require('../../db/m
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const review = require('../../db/models/review');
+// const review = require('../../db/models/review');
 //Get all spots
 router.get('/',async(req,res,next)=>{
     const spots = await Spot.findAll({
@@ -104,7 +104,44 @@ router.get('/:spotId',async(req,res,next)=>{
     res.json(spot)
 })
 
-// router.post('/',async(req,res,next)=>{
+router.post('/',requireAuth ,async(req,res,next)=>{
+    const errors = []
+    const ownerId = req.user.id
+    const {address,city,state,country,lat,lng,name,description,price} = req.body
 
-// })
+    if(!address) errors.push("Street address is required")
+    if(!city) errors.push("City is required")
+    if(!state) errors.push('State is required')
+    if(!country) errors.push('Country is required')
+    if(!lat) errors.push('Latitude is not valid')
+    if(!lng) errors.push('Longitude is not valid')
+    if(!name) errors.push('Name is required')
+    if(name && name.length>=50) errors.push('Name must be less than 50 characters')
+    if(!description) errors.push('Description is required')
+    if(!price) errors.push('Price per day is required')
+
+    if(errors.length){
+        res.statusCode = 400
+        res.json({
+            message: "Validation Error",
+            status: res.statusCode,
+            errors: errors
+        })
+    }
+
+    const newsSpot = await Spot.create({
+        ownerId: ownerId,
+        ...req.body
+    })
+    await newsSpot.save()
+    const returnSpot = await Spot.findOne({where: {'name': name}})
+    res.statusCode = 201
+    res.json(returnSpot)
+})
+
+// function validateSpot(body){
+//     const required = []
+//     const errors = []
+//     const keys = Object.key
+// }
 module.exports = router;
