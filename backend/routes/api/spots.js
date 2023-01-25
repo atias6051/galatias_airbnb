@@ -297,5 +297,9 @@ router.get('/:spotId/bookings', requireAuth, checkSpot, async(req,res)=>{
     }
     res.json(retObj)
 })
+//Create a Booking from a Spot based on the Spot's id
+router.post('/:spotId/bookings', requireAuth, checkSpot, async(req,res)=>{
+
+})
 
 module.exports = router;

@@ -5,7 +5,7 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User,Spot,SpotImage,Review,Booking, ReviewImage, sequelize, Sequelize } = require('../../db/models');
 
 router.get('/current', requireAuth,async(req,res)=>{
-    const bookings = await Booking.findAll({wehre:{'userId': req.user.id}})
+    const bookings = await Booking.findAll({where:{'userId': req.user.id}})
     const retObj = {Bookings:[]}
     for(let book of bookings){
         let jbook = book.toJSON()
