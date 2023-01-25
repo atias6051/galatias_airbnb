@@ -131,6 +131,7 @@ router.get('/:spotId',async(req,res,next)=>{
     res.json(spot)
 })
 
+//post new spot
 router.post('/',requireAuth ,async(req,res,next)=>{
     const errors = []
     const ownerId = req.user.id
@@ -166,6 +167,7 @@ router.post('/',requireAuth ,async(req,res,next)=>{
     res.json(returnSpot)
 })
 
+//add spot image
 router.post('/:spotId/images', requireAuth, authorize, async(req,res,next)=>{
     const {url, preview} = req.body
     if(!url) res.json({message: "Please provide image url",statusCode: 404})
@@ -186,6 +188,7 @@ router.post('/:spotId/images', requireAuth, authorize, async(req,res,next)=>{
     res.json(spotImg)
 })
 
+//edit spot by id
 router.put('/:spotId', requireAuth, authorize, async(req,res,next)=>{
 
     const {address,city,state,country,lat,lng,name,description,price} = req.body
@@ -203,6 +206,14 @@ router.put('/:spotId', requireAuth, authorize, async(req,res,next)=>{
 
     await spot.save()
     res.json(spot)
+})
+
+//delete spot
+router.delete('/:spotId', requireAuth, authorize, async(req,res,next)=>{
+    let spot = await Spot.findByPk(req.params.spotId)
+    await spot.destroy()
+    res.statusCode = 200
+    res.json({message: "Successfully deleted", statusCode: res.statusCode})
 })
 
 module.exports = router;
