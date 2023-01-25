@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User,Spot,SpotImage,Review,ReviewImage, sequelize, Sequelize } = require('../../db/models');
+const { User,Spot,SpotImage,Review,ReviewImage,Booking, sequelize, Sequelize } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -276,5 +276,26 @@ router.post('/:spotId/reviews', requireAuth, checkSpot, async(req,res,next)=>{
     res.json(revCheck)
 })
 
+//Get all Bookings for a Spot based on the Spot's id
+router.get('/:spotId/bookings', requireAuth, checkSpot, async(req,res)=>{
+    const retObj = {Bookings: []}
+    let spot = await Spot.findByPk(req.params.spotId)
+    spot = spot.toJSON()
+    let isOwner = req.user.id == spot.ownerId
+    const bookings = await Booking.findAll({where:{'spotId': req.params.spotId}})
+    for(let book of bookings){
+        let jbook = book.toJSON()
+        let orderedObj = {}
+        if(isOwner){
+            let user = await User.findByPk(jbook.userId,{attributes:['id','firstName','lastName']})
+            // orderedObj.User = user
+            orderedObj = {User:user,...jbook}
+        }else{
+            orderedObj = {spotId: jbook.spotId, startDate: jbook.startDate, endDate: jbook.endDate}
+        }
+        retObj.Bookings.push(orderedObj)
+    }
+    res.json(retObj)
+})
 
 module.exports = router;
