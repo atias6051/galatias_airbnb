@@ -2,10 +2,19 @@ const express = require('express')
 const router = express.Router();
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User,Spot,SpotImage,Review, sequelize, Sequelize } = require('../../db/models');
+const { User,Spot,SpotImage,Review,ReviewImage, sequelize, Sequelize } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+
+const checkSpot = async(req,res,next)=>{
+    let spot = await Spot.findByPk(req.params.spotId)
+    if(!spot){
+        res.statusCode = 404
+        res.json({message: "Spot couldn't be found",statusCode: 404})
+    }
+    return next()
+}
 
 const authorize = async(req,res,next) =>{
     let spot = await Spot.findByPk(req.params.spotId)
@@ -215,5 +224,57 @@ router.delete('/:spotId', requireAuth, authorize, async(req,res,next)=>{
     res.statusCode = 200
     res.json({message: "Successfully deleted", statusCode: res.statusCode})
 })
+
+//Get all Reviews by a Spot's id
+router.get('/:spotId/reviews', checkSpot, async(req,res,next)=>{
+    let reviews = await Review.findAll({where: {'spotId':req.params.spotId}})
+    let retObject = {Reviews:[]}
+    for(let rev of reviews){
+        let jrev = rev.toJSON()
+
+        let user = await User.findByPk(jrev.userId,{attributes:['id','firstName','lastName']})
+        jrev.User = user.toJSON()
+
+        let revImgs = await ReviewImage.findAll({where:{'reviewId': jrev.id},attributes:['id','url']})
+        jrev.ReviewImages = []
+        for(let ri of revImgs){
+            jrev.ReviewImages.push(ri)
+        }
+
+        retObject.Reviews.push(jrev)
+    }
+    res.json(retObject)
+})
+
+//Create a Review for a Spot based on the Spot's id
+router.post('/:spotId/reviews', requireAuth, checkSpot, async(req,res,next)=>{
+    const {review, stars} = req.body
+
+    let checkRev = await Review.findOne({where:{'userId': req.user.id,'spotId':req.params.spotId}})
+    if(checkRev){
+        res.statusCode = 403
+        res.json({message: "User already has a review for this spot", statusCode: 403})
+    }
+
+    const validationError = {message:'Validation error',statusCode: 400,errors:{}}
+    if(!review) validationError.errors.review = "Review text is required"
+    if(!stars || isNaN(stars) || stars<1 || stars>5) validationError.errors.stars = "Stars must be an integer from 1 to 5"
+    if(validationError.errors.review || validationError.errors.stars){
+        res.statusCode = 400
+        res.json(validationError)
+    }
+
+    const newReview = await Review.create({
+        userId:req.user.id,
+        spotId: req.params.spotId,
+        review: review,
+        stars: stars
+    })
+
+    const revCheck = await Review.findOne({where:{'userId': req.user.id,'spotId':req.params.spotId}})
+    res.statusCode = 201
+    res.json(revCheck)
+})
+
 
 module.exports = router;
