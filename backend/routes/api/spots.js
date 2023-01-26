@@ -84,8 +84,6 @@ router.get('/test/:spotId',requireAuth,checkSpot,validateBooking,(req,res)=>{
 //Get all spots
 router.get('/',async(req,res,next)=>{
     let {page,size} = req.query
-    // console.log(`page ${page}`)
-    // console.log(`size ${size}`)
     const validationErrorObj = {message:"Validation Error",statusCode:400,errors:{}}
     if(page == undefined || Number(page)>10) page = 1
     if(size == undefined || Number(size)>20) size = 20
@@ -157,7 +155,6 @@ router.get('/current', requireAuth, async(req,res,next)=>{
             where: {'spotId': jspot.id},
             attributes: [[Sequelize.fn('AVG',Sequelize.col('stars')),'avgRating']]
         })
-        console.log(avg[0].toJSON())
         jspot.avgRating = avg[0].toJSON().avgRating || 0
 
         let previewImage = await SpotImage.findOne({
@@ -197,8 +194,8 @@ router.get('/:spotId',async(req,res,next)=>{
         ]
     })
     avg = avg[0].toJSON()
-    spot.numReviews = avg.numReviews
-    spot.avgStarRating = avg.avgStarRating
+    spot.numReviews = parseInt(avg.numReviews) || 0
+    spot.avgStarRating = parseFloat(parseFloat(avg.avgStarRating).toFixed(1)) || 0
 
     let images = await SpotImage.findAll({where:{'spotId': spot.id}})
     let spotImages = []
