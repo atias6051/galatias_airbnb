@@ -73,7 +73,6 @@ const validateBooking = async(req,res,next) =>{
             return res.json(validationErrorObj)
         }
         if(bookStart <= end && bookEnd >= end && jbook.id !== req.params.bookingId){
-            console.log(jbook.id)
             res.statusCode = 403
             validationErrorObj.errors.endDate = "End date conflicts with an existing booking"
             return res.json(validationErrorObj)
