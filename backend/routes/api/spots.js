@@ -14,7 +14,7 @@ const checkSpot = async(req,res,next)=>{
     let spot = await Spot.findByPk(req.params.spotId)
     if(!spot){
         res.statusCode = 404
-        res.json({message: "Spot couldn't be found",statusCode: 404})
+        return res.json({message: "Spot couldn't be found",statusCode: 404})
     }
     return next()
 }
@@ -23,7 +23,7 @@ const authorize = async(req,res,next) =>{
     let spot = await Spot.findByPk(req.params.spotId)
     if(!spot){
         res.statusCode = 404
-        res.json({message: "Spot couldn't be found",statusCode: 404})
+        return res.json({message: "Spot couldn't be found",statusCode: 404})
     }
 
     if(spot.ownerId !== req.user.id){
@@ -47,7 +47,7 @@ const validateBooking = async(req,res,next) =>{
     if( end == start || end < start ){
         validationErrorObj.errors.endDate = "endDate cannot be on or before startDate"
         res.statusCode = 400
-        res.json(validationErrorObj)
+        return res.json(validationErrorObj)
     }
 
     const bookings = await Booking.findAll({
@@ -65,12 +65,12 @@ const validateBooking = async(req,res,next) =>{
         if(bookStart <= start && bookEnd >= start){
             res.statusCode = 403
             validationErrorObj.errors.startDate = "Start date conflicts with an existing booking"
-            res.json(validationErrorObj)
+            return res.json(validationErrorObj)
         }
         if(bookStart <= end && bookEnd >= end){
             res.statusCode = 403
             validationErrorObj.errors.endDate = "End date conflicts with an existing booking"
-            res.json(validationErrorObj)
+            return res.json(validationErrorObj)
         }
     }
     return next()
