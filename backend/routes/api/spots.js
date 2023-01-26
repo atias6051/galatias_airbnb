@@ -133,7 +133,8 @@ router.get('/',async(req,res,next)=>{
 
         spotsList.push(jspot)
     }
-    res.json(spotsList)
+    const retObj = {Spots:spotsList}
+    res.json(retObj)
 })
 
 
@@ -372,7 +373,6 @@ router.get('/:spotId/bookings', requireAuth, checkSpot, async(req,res)=>{
 })
 //Create a Booking from a Spot based on the Spot's id
 router.post('/:spotId/bookings', requireAuth, checkSpot, validateBooking, async(req,res)=>{
-    console.log("here!!!!!!!!!!!!!!!")
     const {startDate,endDate} = req.body
     await Booking.create({
         spotId: req.params.spotId,
