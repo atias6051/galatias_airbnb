@@ -1,11 +1,14 @@
 const express = require('express')
 const router = express.Router();
+const {Op} = require('sequelize')
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User,Spot,SpotImage,Review,ReviewImage,Booking, sequelize, Sequelize } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const booking = require('../../db/models/booking');
+const user = require('../../db/models/user');
 
 const checkSpot = async(req,res,next)=>{
     let spot = await Spot.findByPk(req.params.spotId)
@@ -34,6 +37,49 @@ const authorize = async(req,res,next) =>{
     return next()
 }
 
+const validateBooking = async(req,res,next) =>{
+    const {startDate,endDate} = req.body
+    const validationErrorObj = {message: "Validation error",statusCode:400,errors:{}}
+    let start = new Date(startDate).getTime()
+    let end = new Date(endDate).getTime()
+
+    //check if startDate before endDate
+    if( end == start || end < start ){
+        validationErrorObj.errors.endDate = "endDate cannot be on or before startDate"
+        res.statusCode = 400
+        res.json(validationErrorObj)
+    }
+
+    const bookings = await Booking.findAll({
+        where:{
+            'spotId': req.params.spotId,
+        }
+    })
+
+    validationErrorObj.message = "Sorry, this spot is already booked for the specified dates"
+    validationErrorObj.statusCode = 403
+    for(let book of bookings){
+        let jbook = book.toJSON()
+        bookStart = new Date(jbook.startDate).getTime()
+        bookEnd = new Date(jbook.endDate).getTime()
+        if(bookStart <= start && bookEnd >= start){
+            res.statusCode = 403
+            validationErrorObj.errors.startDate = "Start date conflicts with an existing booking"
+            res.json(validationErrorObj)
+        }
+        if(bookStart <= end && bookEnd >= end){
+            res.statusCode = 403
+            validationErrorObj.errors.endDate = "End date conflicts with an existing booking"
+            res.json(validationErrorObj)
+        }
+    }
+    return next()
+
+}
+
+router.get('/test/:spotId',requireAuth,checkSpot,validateBooking,(req,res)=>{
+    res.json({message: "so far so good!"})
+})
 //Get all spots
 router.get('/',async(req,res,next)=>{
     const spots = await Spot.findAll()
@@ -298,8 +344,21 @@ router.get('/:spotId/bookings', requireAuth, checkSpot, async(req,res)=>{
     res.json(retObj)
 })
 //Create a Booking from a Spot based on the Spot's id
-router.post('/:spotId/bookings', requireAuth, checkSpot, async(req,res)=>{
-
+router.post('/:spotId/bookings', requireAuth, checkSpot, validateBooking, async(req,res)=>{
+    console.log("here!!!!!!!!!!!!!!!")
+    const {startDate,endDate} = req.body
+    await Booking.create({
+        spotId: req.params.spotId,
+        userId: req.user.id,
+        startDate: startDate,
+        endDate: endDate
+    })
+    const booking = await Booking.findOne({where:{
+        'spotId':req.params.spotId,
+        'userId':req.user.id,
+        "startDate":startDate
+    }})
+    res.json(booking)
 })
 
 module.exports = router;
