@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate:{
         isDate: true,
-        isAfter:  new Date().toISOString().slice(0, 10)
+        // isAfter:  new Date().toISOString().slice(0, 10)
       }
     },
     endDate: {
@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate:{
         isDate: true,
-        isAfter: this.startDate
+        // isAfter: this.startDate
       }
     }
   }, {
