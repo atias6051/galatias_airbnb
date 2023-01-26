@@ -172,7 +172,8 @@ router.get('/current', requireAuth, async(req,res,next)=>{
 
         spotsList.push(jspot)
     }
-    res.json(spotsList)
+    const retObj = {Spots:spotsList}
+    res.json(retObj)
 })
 
 
