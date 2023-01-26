@@ -80,9 +80,36 @@ const validateBooking = async(req,res,next) =>{
 router.get('/test/:spotId',requireAuth,checkSpot,validateBooking,(req,res)=>{
     res.json({message: "so far so good!"})
 })
+
 //Get all spots
 router.get('/',async(req,res,next)=>{
-    const spots = await Spot.findAll()
+    let {page,size} = req.query
+    // console.log(`page ${page}`)
+    // console.log(`size ${size}`)
+    const validationErrorObj = {message:"Validation Error",statusCode:400,errors:{}}
+    if(page == undefined || Number(page)>10) page = 1
+    if(size == undefined || Number(size)>20) size = 20
+
+    page = parseInt(page);
+    size = parseInt(size);
+
+    if(isNaN(page)|| page<1) validationErrorObj.errors.page = "Page must be greater than or equal to 1"
+    if(isNaN(size)|| size<1) validationErrorObj.errors.size = "Size must be greater than or equal to 1"
+
+    if(Object.keys(validationErrorObj.errors).length){
+        res.statusCode = 400
+        return res.json(validationErrorObj)
+    }
+
+    const pagination = {}
+
+    if(page>= 1&& size>=1){
+        pagination.limit = Number(size)
+        pagination.offset = Number(size*(page-1))
+    }
+    const spots = await Spot.findAll({
+        ...pagination
+    })
     let spotsList = []
     for(let spot of spots){
         let jspot = spot.toJSON()
