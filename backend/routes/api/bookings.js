@@ -42,7 +42,7 @@ const validateBooking = async(req,res,next) =>{
     if( end == start || end < start ){
         validationErrorObj.errors.endDate = "endDate cannot be on or before startDate"
         res.statusCode = 400
-        res.json(validationErrorObj)
+        return res.json(validationErrorObj)
     }
 
     let booking = await Booking.findByPk(req.params.bookingId)
@@ -50,7 +50,7 @@ const validateBooking = async(req,res,next) =>{
     let bookEnd = new Date(booking.endDate).getTime()
     if(bookEnd < today){
         res.statusCode = 403
-        res.json({message: "Past bookings can't be modified",statusCode: 403})
+        return res.json({message: "Past bookings can't be modified",statusCode: 403})
     }
 
     const bookings = await Booking.findAll({
@@ -70,13 +70,13 @@ const validateBooking = async(req,res,next) =>{
         if(bookStart <= start && bookEnd >= start && jbook.id !== req.params.bookingId){
             res.statusCode = 403
             validationErrorObj.errors.startDate = "Start date conflicts with an existing booking"
-            res.json(validationErrorObj)
+            return res.json(validationErrorObj)
         }
         if(bookStart <= end && bookEnd >= end && jbook.id !== req.params.bookingId){
             console.log(jbook.id)
             res.statusCode = 403
             validationErrorObj.errors.endDate = "End date conflicts with an existing booking"
-            res.json(validationErrorObj)
+            return res.json(validationErrorObj)
         }
     }
 
