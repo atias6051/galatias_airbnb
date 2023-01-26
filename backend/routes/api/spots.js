@@ -118,7 +118,8 @@ router.get('/',async(req,res,next)=>{
             where: {'spotId': jspot.id},
             attributes: [[Sequelize.fn('AVG',Sequelize.col('stars')),'avgRating']]
         })
-        jspot.avgRating = avg[0].toJSON().avgRating || 0
+
+        jspot.avgRating = parseFloat(parseFloat(avg[0].toJSON().avgRating).toFixed(1)) || 0
 
         let previewImage = await SpotImage.findOne({
             where:{
