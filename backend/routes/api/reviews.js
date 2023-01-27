@@ -27,7 +27,6 @@ router.get('/current', requireAuth, async(req,res,next)=>{
     const resObject = {Reviews: []}
     for(let rev of reviews){
         let jrev = rev.toJSON()
-        console.log('jrev')
         let user = await User.findByPk(jrev.userId,{attributes: ['id','firstName','lastName']})
         user = user.toJSON()
 
@@ -89,7 +88,7 @@ router.put('/:reviewId',requireAuth, checkReview, authorize, async(req,res)=>{
     if(!stars || isNaN(stars) || stars<1 || stars>5) validationError.errors.stars = "Stars must be an integer from 1 to 5"
     if(validationError.errors.review || validationError.errors.stars){
         res.statusCode = 400
-        res.json(validationError)
+        return res.json(validationError)
     }
     const editReview = await Review.findByPk(req.params.reviewId)
     editReview.review = review
