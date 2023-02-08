@@ -20,6 +20,7 @@ const authorize = async (req,res,next) =>{
         statusCode: 403
     })
 }
+
 //Get all Reviews of the Current User
 router.get('/current', requireAuth, async(req,res,next)=>{
     const userId = req.user.id
