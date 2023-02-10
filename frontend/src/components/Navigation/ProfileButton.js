@@ -4,7 +4,7 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
-
+import { Link } from 'react-router-dom';
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
@@ -42,6 +42,9 @@ function ProfileButton({ user }) {
 
   return (
     <>
+      {user ? (
+        <Link className="dev" to="/">Create a New Spot</Link>
+      ):(<></>)}
       <button id="profile-button" className={user?'logged-in' : 'no-user'} onClick={openMenu}>
         <i className="fas fa-user-circle" />
       </button>
@@ -52,7 +55,7 @@ function ProfileButton({ user }) {
             <li>{user.firstName} {user.lastName}</li>
             <li>{user.email}</li>
             <li>
-              <button onClick={logout}>Log Out</button>
+              <button className="hover-link" onClick={logout}>Log Out</button>
             </li>
           </>
         ) : (
