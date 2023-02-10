@@ -1,3 +1,37 @@
 .hidden{
     display: none;
 }
+
+.nav-bar{
+    display: flex;
+    /* position: relative; */
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    padding: 15px;
+    border-bottom: 1px solid gray;
+
+}
+
+.profile-dropdown{
+    position: absolute;
+    padding: 5px;
+    background-color: beige;
+    border: 1px solid blue;
+    list-style: none;
+    top: 50px;
+    right: 10px;
+    border-radius: 5px;
+}
+
+#profile-button{
+    padding: 5px;
+    font-size: large;
+    border-radius: 50%;
+}
+.logged-in{
+    color: rgb(67, 0, 130);
+}
+.no-user{
+    color: rgb(225, 147, 21);
+}
