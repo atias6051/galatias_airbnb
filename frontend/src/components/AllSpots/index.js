@@ -13,7 +13,7 @@ function AllSpots(){
     },[dispatch])
 
     const handleSpotClick = (e) =>{
-        console.log(e.target.value)
+        // console.log(e.target.value)
         // history.push(`/spots/${e.target.value}`)
     }
 
