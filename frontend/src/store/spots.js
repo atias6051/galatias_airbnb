@@ -44,7 +44,6 @@ const spotsReducer = (state=initialState,action) => {
             newState = {...newState, allSpots: {...newState.allSpots}}
             return newState
         case LOAD_SINGLE:
-            // newState.singleSpot = {...action.spot}
             newState = {...newState,singleSpot:{...action.spot}}
             return newState
         default:

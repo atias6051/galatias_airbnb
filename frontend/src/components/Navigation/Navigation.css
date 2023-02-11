@@ -1,3 +1,58 @@
 .hidden{
     display: none;
 }
+
+.nav-bar{
+    display: flex;
+    /* position: relative; */
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    padding: 10px 35px;
+    border-bottom: 1px solid gray;
+
+}
+
+.profile-dropdown{
+    position: absolute;
+    padding: 15px;
+    background-color: beige;
+    border: 1px solid blue;
+    border-top: none;
+    list-style: none;
+    top: 75px;
+    right: 10px;
+    border-radius: 5px;
+    /* height: 200px; */
+    width: 180px;
+}
+
+.profile-dropdown li{
+    margin: 15px 0;
+}
+
+#profile-button{
+    padding: 5px;
+    /* display: flex; */
+    /* justify-content: center; */
+    font-size: 2em;
+    border-radius: 5px;
+}
+.logged-in{
+    color: rgb(67, 0, 130);
+}
+.no-user{
+    color: rgb(225, 147, 21);
+}
+
+/* .testClass{
+    color: red;
+    border: 1px dotted blue;
+    margin-right: 10px;
+} */
+
+#home-logo{
+   position: relative;
+   top: 5px;
+   height: 50px;
+}

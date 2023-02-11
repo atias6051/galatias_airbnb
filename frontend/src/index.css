@@ -1,1 +1,14 @@
 /* TODO Add site wide styles */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.dev{
+    border: 2px dotted red;
+}
+
+.hover-link:hover{
+    cursor: pointer;
+}

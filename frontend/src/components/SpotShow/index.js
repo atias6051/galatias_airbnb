@@ -10,26 +10,28 @@ function SpotShow(){
     const dispatch = useDispatch()
 
     useEffect(()=>{
-        // async function fetcher(){
-        //     await dispatch(getSingleSpot(spotId))
-        // }
-        // fetcher()
         dispatch(getSingleSpot(spotId))
     },[dispatch])
 
+    if(Object.keys(spot).length === 0) return null
+
     return (
         <section id='spot-show-section'>
+            {spot &&
+            <>
             <h2>{spot?.name}</h2>
-            <h3>{spot.city}, {spot.state}, {spot.country}</h3>
+            <h3>{spot?.city}, {spot?.state}, {spot?.country}</h3>
             <div id="spot-image-gallery">
                 {spot.SpotImages.map(img=>(
-                    <div className='gallery-image-div'>
-                        <img src={img.url}/>
+                    <div >
+                        <img className='gallery-image-div' src={img.url}/>
                     </div>
                 ))}
             </div>
-            <h3>Hosted by {spot.owner.firstName} {spot.owner.lastName}</h3>
-            <p>{spot.description}</p>
+            <h3>Hosted by {spot?.owner.firstName} {spot?.owner.lastName}</h3>
+            <p>{spot?.description}</p>
+            </>
+            }
         </section>
     )
 
