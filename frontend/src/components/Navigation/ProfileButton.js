@@ -43,7 +43,7 @@ function ProfileButton({ user }) {
   return (
     <>
       {user ? (
-        <Link className="dev" to="/">Create a New Spot</Link>
+        <Link className="dev" to="/spots/new">Create a New Spot</Link>
       ):(<></>)}
       <button id="profile-button" className={user?'logged-in' : 'no-user'} onClick={openMenu}>
         <i className="fas fa-user-circle" />

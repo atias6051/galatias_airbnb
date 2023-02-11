@@ -15,7 +15,6 @@ function AllSpots(){
 
     return (
         <>
-        <h1>Connected</h1>
         <section id='all-spots-section'>
 
         {spots && Object.values(spots).map(spot=>(
