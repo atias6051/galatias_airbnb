@@ -1,15 +1,27 @@
 .spot-card{
-    background-color: rgb(155, 155, 177);
-    padding: 10px;
+    background-color: rgb(255, 255, 255);
+    position: relative;
+    /* padding: 10px; */
+    width: 270px;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 1px 5px 5px gray;
+    transition: 0.25s ease-in-out;
 }
-
+.spot-card:hover{
+    transform: scale(101%);
+    box-shadow: 2px 5px 5px rgb(146, 195, 210);
+}
 .spot-card-prev-image{
-    width: 100%;
-    height: 75%;
+    width: 270px;
+    height: 250px;
     object-fit: cover;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
 }
 
 .spot-preview-info{
     display: flex;
     justify-content: space-between;
+    padding: 5px;
 }

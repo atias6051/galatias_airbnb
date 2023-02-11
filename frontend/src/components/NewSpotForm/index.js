@@ -127,7 +127,7 @@ function NewSpotForm(){
                     <input
                         className='full-width'
                         type='text'
-                        placeholder="Cuontry"
+                        placeholder="Country"
                         value={country}
                         onChange={(e)=> setCountry(e.target.value)}
                         />
