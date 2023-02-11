@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { getSingleSpot} from '../../store/spots';
 import { useParams } from 'react-router-dom';
 import './SpotShow.css'
+import ReserveSpot from './ReserveSpot';
 
 function SpotShow(){
     const {spotId} = useParams()
@@ -30,6 +31,7 @@ function SpotShow(){
             </div>
             <h3>Hosted by {spot?.owner.firstName} {spot?.owner.lastName}</h3>
             <p>{spot?.description}</p>
+            <ReserveSpot spot={spot} />
             </>
             }
         </section>
