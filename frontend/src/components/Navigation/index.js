@@ -9,9 +9,9 @@ function Navigation({ isLoaded }){
 
   return (
     <ul className='nav-bar'>
-      <li>
-        <NavLink exact to="/">Home</NavLink>
-      </li>
+      {/* <li> */}
+        <NavLink exact to="/"><img id="home-logo" src="https://i.imgur.com/4XufpWQ.png"/></NavLink>
+      {/* </li> */}
       {isLoaded && (
         <li>
           <ProfileButton user={sessionUser} />

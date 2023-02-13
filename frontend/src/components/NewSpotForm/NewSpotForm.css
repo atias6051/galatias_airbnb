@@ -1,0 +1,26 @@
+.inline-label{
+    display: inline-block;
+}
+.block-label{
+    display: block;
+}
+
+#new-spot-form{
+    margin: auto;
+}
+
+#create-spot-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.full-width{
+    width: 100%;
+}
+.half-width{
+    width: 40%;
+}
+.form-error{
+    color: red;
+}
