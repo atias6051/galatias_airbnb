@@ -7,9 +7,10 @@
     text-decoration: none;
     box-shadow: 1px 5px 5px gray;
     transition: 0.25s ease-in-out;
+    color: black;
 }
 .spot-card:hover{
-    transform: scale(101%);
+    transform: translateY(-3px);
     box-shadow: 2px 5px 5px rgb(146, 195, 210);
 }
 .spot-card-prev-image{

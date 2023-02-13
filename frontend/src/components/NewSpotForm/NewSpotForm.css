@@ -24,3 +24,16 @@
 .form-error{
     color: red;
 }
+
+#new-spot-form input{
+    border: 1px solid red;
+    height: 25px;
+    border-radius: 3px;
+    margin: 5px 2px;
+    padding: 5px;
+}
+
+#new-spot-form label{
+    display: flex;
+    flex-direction: column;
+}

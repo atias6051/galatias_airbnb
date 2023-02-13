@@ -17,7 +17,7 @@ function SpotReviews({spotId}){
     return (
         <>
         {spotReviews && reviews.map(rev=>(
-            <li>{rev.review}</li>
+            <li key={rev.id}>{rev.review}</li>
         ))}
         </>
     )

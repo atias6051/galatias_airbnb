@@ -1,7 +1,9 @@
 import {Link} from 'react-router-dom'
 import './SpotTile.css'
 function SpotTile({spot}){
-    console.log(spot)
+    const path = window.location.href.split('/')
+    console.log(path[path.length-1])
+    // console.log(path[path.length-2])
     return(
         <Link className='spot-card' key={spot.id} to={`spots/${spot.id}`}>
             <img  className="spot-card-prev-image" src={spot.previewImage} alt={spot.name}/>
@@ -11,6 +13,7 @@ function SpotTile({spot}){
                     <h3>${spot.price} night</h3>
                 </div>
                 <span ><i className="fa-regular fa-star"></i>{spot.avgRating>0?spot.avgRating:'New'}</span>
+            {}
             </div>
         </Link>
     )

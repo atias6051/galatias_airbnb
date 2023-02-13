@@ -1,15 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { getSingleSpot} from '../../store/spots';
-import { useParams } from 'react-router-dom';
+import { deleteSpot, getSingleSpot} from '../../store/spots';
+import { useHistory, useParams } from 'react-router-dom';
 import './SpotShow.css'
 import ReserveSpot from './ReserveSpot';
 import SpotReviews from '../SpotReviews';
 
 function SpotShow(){
     const {spotId} = useParams()
+    const history = useHistory()
     const spot = useSelector(state=>state.spots.singleSpot)
+    const currentUser = useSelector(state=>state.session.user)
     const dispatch = useDispatch()
+
+    const handleDelete = () =>{
+        dispatch(deleteSpot(spotId))
+        history.push('/')
+    }
 
     useEffect(()=>{
         dispatch(getSingleSpot(spotId))
@@ -25,8 +32,8 @@ function SpotShow(){
             <h3>{spot?.city}, {spot?.state}, {spot?.country}</h3>
             <div id="spot-image-gallery">
                 {spot.SpotImages.map(img=>(
-                    <div >
-                        <img className='gallery-image-div' src={img.url}/>
+                    <div key={img.id} >
+                        <img key={img.id} className='gallery-image-div' src={img.url}/>
                     </div>
                 ))}
             </div>
@@ -36,6 +43,7 @@ function SpotShow(){
             <SpotReviews spotId={spotId} />
             </>
             }
+            {(currentUser && currentUser.id === spot.owner.id)?(<button onClick={handleDelete}>delete</button>):(<></>)}
         </section>
     )
 
