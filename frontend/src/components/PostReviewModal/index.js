@@ -1,10 +1,10 @@
-import './PostReviewModal.css'
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux';
 import { useModal } from "../../context/Modal"
 import { postReview } from '../../store/reviews';
 import { getSingleSpot } from '../../store/spots';
+import './PostReviewModal.css'
 
 function PostReviewModal(){
     const spot = useSelector(state=>state.spots.singleSpot)
