@@ -9,6 +9,10 @@
     transition: 0.25s ease-in-out;
     color: black;
 }
+.spot-card *{
+    text-decoration: none;
+    color: black;
+}
 .spot-card:hover{
     transform: translateY(-3px);
     box-shadow: 2px 5px 5px rgb(146, 195, 210);
@@ -25,4 +29,23 @@
     display: flex;
     justify-content: space-between;
     padding: 5px;
+}
+
+.delete-update-div{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+.delete-update-div button{
+    background-color: rgb(143, 185, 156);
+    border-radius: 2px;
+    margin: 5px;
+    padding: 2px;
+}
+.delete-update-div button:hover{
+    cursor: pointer;
+}
+
+.ratings-span{
+    display: flex;
 }

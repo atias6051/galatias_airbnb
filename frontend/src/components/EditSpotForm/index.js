@@ -8,7 +8,7 @@ import '../NewSpotForm/NewSpotForm.css'
 function EditSpotForm(){
     const user = useSelector(state=>state.session.user)
     // const allSpot = useSelector(state=>state.spots.allSpots)
-    if(!user) history.push('/')
+
     const {spotId} = useParams()
     // const spot = useSelector(state=>state.spots.allSpots[spotId])
 
@@ -17,12 +17,11 @@ function EditSpotForm(){
     const history = useHistory()
 
     const spot = useSelector(state=>state.spots.singleSpot)
+    if(!user) history.push('/')
 
     useEffect(()=>{
         async function tester(){
             dispatch(getSingleSpot(spotId))
-            // .then(res=>console.log("REs",res))
-
         }
         tester()
     },[dispatch])
@@ -92,7 +91,8 @@ function EditSpotForm(){
             }
         }
         console.log(submitObj)
-        dispatch(editSpot(submitObj,spotId))
+        await dispatch(editSpot(submitObj,spotId))
+        await dispatch(getSingleSpot(spotId))
         history.push(`/spots/${spotId}`)
     }
 
@@ -131,7 +131,7 @@ function EditSpotForm(){
     return(
         <section id="create-spot-section">
             <form id='new-spot-form'>
-                <h1>{`Edit Spot`}</h1>
+                <h1>{`Update your Spot`}</h1>
                 <div>
                     <h3>Where's your place located?</h3>
                     <p>
@@ -299,7 +299,7 @@ function EditSpotForm(){
                 onChange={handleChange}
                 />
                 {(submitted && validationErrors.image4.length)?<p className='form-error'>{validationErrors.image4}</p>:(<></>)}
-                <button type='submit' onClick={handleSubmit}>Create Spot</button>
+                <button type='submit' onClick={handleSubmit}>Update your Spot</button>
             </form>
 
         </section>

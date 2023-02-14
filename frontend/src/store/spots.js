@@ -22,7 +22,6 @@ const loadSingle = (spot) =>{
     }
 }
 
-
 const removeSpot = spotId =>{
     return{
         type: REMOVE_SPOT,
@@ -231,8 +230,9 @@ const spotsReducer = (state=initialState,action) => {
             return newState;
         case UPDATE_SPOT:
             delete newState.allSpots[action.spot.id]
-            newState = {...newState, allSpots: {...newState.allSpots}}
+            newState = {...newState, allSpots: {...newState.allSpots},singleSpot:{...newState.singleSpot}}
             newState.allSpots[action.spot.id] = {...action.spot}
+            newState.singleSpot[action.spot.id] = {...action.spot,SpotImages:[...action.spot.SpotImages]}
             return newState
         default:
             return state;

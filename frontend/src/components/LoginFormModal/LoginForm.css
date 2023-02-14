@@ -1,8 +1,9 @@
 .login-form{
     display: flex;
     flex-direction: column;
+    align-items: center;
     margin: auto;
-    width: 30%;
+    /* width: 100%; */
     border: 1px solid gray;
     padding: 5px;
 }
@@ -13,3 +14,18 @@
     flex-direction: column;
     align-items: center;
 } */
+.login-form-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 40vh;
+}
+.login-form-form input{
+    margin: 10px;
+    display: block;
+}
+.login-form-form label{
+    margin: auto;
+    /* margin: 10px; */
+    display: block;
+}

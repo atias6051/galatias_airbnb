@@ -111,7 +111,7 @@ function NewSpotForm(){
     return(
         <section id="create-spot-section">
             <form id='new-spot-form'>
-                <h1>Create a new Spot</h1>
+                <h1>Create a New Spot</h1>
                 <div>
                     <h3>Where's your place located?</h3>
                     <p>
@@ -279,7 +279,7 @@ function NewSpotForm(){
                 onChange={e => setImage4(e.target.value)}
                 />
                 {(submitted && validationErrors.image4.length)?<p className='form-error'>{validationErrors.image4}</p>:(<></>)}
-                <button type='submit' onClick={handleSubmit}>Create Spot</button>
+                <button type='submit' className='standard-button' onClick={handleSubmit}>Create</button>
             </form>
 
         </section>

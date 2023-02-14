@@ -1,3 +1,17 @@
 .review-div{
     margin-top: 15px;
 }
+#all-reviews-section{
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.post-review-button{
+    margin-top: 5px;
+    padding: 4px;
+    border: 1px solid black;
+    box-shadow: 3px 3px black;
+}
+.post-review-button:hover{
+    cursor: pointer;
+}

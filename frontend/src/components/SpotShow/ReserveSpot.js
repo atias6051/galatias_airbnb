@@ -1,6 +1,8 @@
+import { useSelector } from 'react-redux'
 import ReviewsDemo from '../SpotReviews/ReviewsDemo'
 import './ReserveSpot.css'
 function ReserveSpot({spot}){
+    // const spott = useSelector(state=>state.singleSpot)
     return (
         <div className="reserve-spot-main-container">
             <div className="price-and-stars">

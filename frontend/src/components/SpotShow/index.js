@@ -15,11 +15,6 @@ function SpotShow(){
     const currentUser = useSelector(state=>state.session.user)
     const dispatch = useDispatch()
 
-    const handleDelete = () =>{
-        dispatch(deleteSpot(spotId))
-        history.push('/')
-    }
-
     useEffect(()=>{
         dispatch(getSingleSpot(spotId))
     },[dispatch])
