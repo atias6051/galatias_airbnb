@@ -1,9 +1,17 @@
 import {useState,useEffect} from 'react'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom';
+import { createSpot } from '../../store/spots';
+import { spotFormValidation } from '../../utils/FormValidations';
 import './NewSpotForm.css'
 
 function NewSpotForm(){
     const dispatch = useDispatch()
+    const history = useHistory()
+    const user = useSelector(state=>state.session.user)
+    if(!user) history.push('/')
+
+    //input fields states
     const [country,setCountry] = useState("")
     const [address, setAddress] = useState("");
     const [city, setCity] = useState("");
@@ -19,58 +27,38 @@ function NewSpotForm(){
     const [image3, setImage3] = useState("");
     const [image4, setImage4] = useState("");
 
-    const validationDependencies = [country,address,city,state,lat,lng,description,name,price,previewImage,image1,image2,image3,image4]
     const [validationErrors, setValidationErros] = useState({})
     const [submitted,setSubmitted] = useState(false)
 
-    const checkPicFormat = url =>{
-        const picFormats = ['png','jpg','jpeg']
-        const urlSplit = url.split('.')
-        return (urlSplit.length > 1 && picFormats.includes(urlSplit[urlSplit.length-1]))
-    }
 
+
+//Validation errors useEffect
     useEffect(()=>{
-        const errors = {
-            country: "",
-            address: "",
-            city: "",
-            state: "",
-            lat: "",
-            lng: "",
-            description: "",
-            name: "",
-            price: "",
-            previewImage: "",
-            image1: "",
-            image2: "",
-            image3: "",
-            image4: "",
+        const spot = {
+            address,
+            city,
+            state,
+            country,
+            lat,
+            lng,
+            name,
+            description,
+            price,
+            previewImage,
+            image1,
+            image2,
+            image3,
+            image4
         }
-
-        if(!country.length) errors.country = 'Country is required'
-        if(!address.length) errors.address = 'Address is required'
-        if(!city.length) errors.city = 'City is required'
-        if(!state.length) errors.state = 'State is required'
-        if(!lat.length) errors.lat = 'Latitude is required'
-        if(!lng.length) errors.lng = 'Longitude is required'
-        if(description.length<30) errors.description = 'Description needs a minimum of 30 characters'
-        if(!name.length) errors.name = 'Name is required'
-        if(!price.length) errors.price = 'Price is required'
-        if(!previewImage.length) errors.previewImage = 'Preview image is required'
-        if(previewImage.length && !checkPicFormat(previewImage)) errors.previewImage = 'Image URL must end in .png, .jpg, or .jpeg'
-        if(image1.length && !checkPicFormat(image1)) errors.image1 = 'Image URL must end in .png, .jpg, or .jpeg'
-        if(image2.length && !checkPicFormat(image2)) errors.image2 = 'Image URL must end in .png, .jpg, or .jpeg'
-        if(image3.length && !checkPicFormat(image3)) errors.image3 = 'Image URL must end in .png, .jpg, or .jpeg'
-        if(image4.length && !checkPicFormat(image4)) errors.image4 = 'Image URL must end in .png, .jpg, or .jpeg'
-        setValidationErros(errors)
+        setValidationErros(spotFormValidation(spot))
     },[country,address,city,state,lat,lng,description,name,price,previewImage,image1,image2,image3,image4])
 
 
-    const handleSubmit = e =>{
+    const handleSubmit = async e =>{
         e.preventDefault()
         setSubmitted(true)
-        console.log(validationErrors)
-        if(Object.keys(validationErrors).length) return null;
+        if(validationErrors.invalid) return null;
+
         const submitObj = {
             newSpot: {
                 address,
@@ -83,9 +71,8 @@ function NewSpotForm(){
                 description,
                 price
             },
-            PrevImage:{
-                previewImage
-            },
+            previewImage
+            ,
             images: {
                 image1,
                 image2,
@@ -93,6 +80,8 @@ function NewSpotForm(){
                 image4
             }
         }
+
+        const newId = await dispatch(createSpot(submitObj))
 
         setCountry("");
         setAddress("");
@@ -108,7 +97,10 @@ function NewSpotForm(){
         setImage2("");
         setImage3("");
         setImage4("");
+
+        history.push(`/spots/${newId}`)
     }
+
     return(
         <section id="create-spot-section">
             <form id='new-spot-form'>
@@ -127,7 +119,7 @@ function NewSpotForm(){
                     <input
                         className='full-width'
                         type='text'
-                        placeholder="Cuontry"
+                        placeholder="Country"
                         value={country}
                         onChange={(e)=> setCountry(e.target.value)}
                         />
@@ -147,9 +139,8 @@ function NewSpotForm(){
 
                 <div className='block-label'>
                 <label>
-                  City {(submitted && validationErrors.city.length)?<p className='form-error'>{validationErrors.city}</p>:(<></>)}
+                  <span>City</span> {(submitted && validationErrors.city.length)?<p className='form-error'>{validationErrors.city}</p>:(<></>)}
                   <input
-                    // className='half-width'
                     type='text'
                     placeholder="City"
                     value={city}
@@ -159,7 +150,6 @@ function NewSpotForm(){
                 <label>
                   State {(submitted && validationErrors.state.length)?<p className='form-error'>{validationErrors.state}</p>:(<></>)}
                   <input
-                    // className='half-width'
                     type='text'
                     placeholder="State"
                     value={state}
@@ -196,7 +186,6 @@ function NewSpotForm(){
                 <textarea
                 className='full-width'
                 rows='5'
-                // type="text-area"
                 placeholder="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}

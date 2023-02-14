@@ -14,14 +14,14 @@ function AllSpots(){
     },[dispatch])
 
     return (
-        <>
+        <section id='all-spot-flex'>
         <section id='all-spots-section'>
 
         {spots && Object.values(spots).map(spot=>(
             <SpotTile key={spot.id} spot={spot} />
         ))}
         </section>
-        </>
+        </section>
     )
 }
 
