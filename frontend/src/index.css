@@ -13,3 +13,7 @@
 .hover-link:hover{
     cursor: pointer;
 }
+
+.marg-right-5px{
+    margin-right: 5px;
+}

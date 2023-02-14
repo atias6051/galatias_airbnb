@@ -216,7 +216,11 @@ const spotsReducer = (state=initialState,action) => {
             return newState
         case REMOVE_SPOT:
             delete newState.allSpots[action.spotId]
-            newState = {...newState, allSpots: {...newState.allSpots}}
+            delete newState.currentUserSpots[action.spotId]
+            newState = {...newState,
+                allSpots: {...newState.allSpots},
+                currentUserSpots: {...newState.currentUserSpots}
+            }
             return newState
         case LOAD_USER_SPOTS:
             newState.currentUserSpots = {}

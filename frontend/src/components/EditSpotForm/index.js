@@ -95,6 +95,7 @@ function EditSpotForm(){
         dispatch(editSpot(submitObj,spotId))
         history.push(`/spots/${spotId}`)
     }
+
     useEffect(()=>{
         try{if(spot){
             if(Number(spot.owner.id) !== Number(user.id)){
