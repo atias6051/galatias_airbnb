@@ -116,6 +116,7 @@ export const getUserSpots = () => async dispatch =>{
     const spots = await res.json()
     dispatch(loadUserSpots(spots))
 }
+
 export const deleteSpot = spotId => async dispatch => {
     const res = await csrfFetch(`/api/spots/${spotId}`,{
         method: "DELETE",

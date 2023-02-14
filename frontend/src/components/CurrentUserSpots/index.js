@@ -19,10 +19,6 @@ function CurrentUserSpots(){
         {spots && Object.values(spots).map(spot=>(
             <SpotTile key={spot.id} spot={spot} />
             ))}
-            {/* <div>
-                <button>Update</button>
-                <button>Delete</button>
-            </div> */}
         </section>
         </section>
         </>

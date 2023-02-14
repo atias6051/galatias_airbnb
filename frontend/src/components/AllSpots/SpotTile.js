@@ -1,11 +1,10 @@
 import {Link} from 'react-router-dom'
 import './SpotTile.css'
 function SpotTile({spot}){
-    const path = window.location.href.split('/')
-    console.log(path[path.length-1])
-    // console.log(path[path.length-2])
+    const path = window.location.href.split('/').pop()
+
     return(
-        <Link className='spot-card' key={spot.id} to={`spots/${spot.id}`}>
+        <Link className='spot-card' key={spot.id} to={`/spots/${spot.id}`}>
             <img  className="spot-card-prev-image" src={spot.previewImage} alt={spot.name}/>
             <div  className='spot-preview-info'>
                 <div>
@@ -13,7 +12,9 @@ function SpotTile({spot}){
                     <h3>${spot.price} night</h3>
                 </div>
                 <span ><i className="fa-regular fa-star"></i>{spot.avgRating>0?spot.avgRating:'New'}</span>
-            {}
+            {path==='current'?(
+                <div><button>Delete</button><button>Update</button></div>
+            ):(<></>)}
             </div>
         </Link>
     )
