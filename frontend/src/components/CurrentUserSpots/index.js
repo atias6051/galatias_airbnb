@@ -28,14 +28,14 @@ function CurrentUserSpots(){
         {spots && Object.values(spots).map(spot=>(
             <>
             <SpotTile key={spot.id} spot={spot} />
-            <div key={spot.id*10}>
+            {/* <div key={spot.id*10}>
             <button onClick={()=>handleDelete(spot.id)}>Delete</button>
             <OpenModalButton
                 buttonText="deleteModal"
                 modalComponent={<DeleteSpotModal spotId={spot.id}/>}
             />
             <button onClick={()=> history.push(`/spots/${spot.id}/edit`)}>Update</button>
-            </div>
+            </div> */}
             </>
             ))}
 

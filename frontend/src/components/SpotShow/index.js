@@ -41,16 +41,9 @@ function SpotShow(){
                 <ReserveSpot spot={spot} />
             </div>
             <ReviewsDemo spot={spot}/>
-            {/* <div className='spot-ratings'>
-            <i className="fa-regular fa-star"></i>
-            <h2>{spot.avgStarRating}</h2>
-            <h2>·</h2>
-            <h2>{spot.numReviews} Reviews</h2>
-            </div> */}
             <SpotReviews spotId={spotId} />
             </>
             }
-            {(currentUser && currentUser.id === spot.owner.id)?(<button onClick={handleDelete}>delete</button>):(<></>)}
         </section>
     )
 
