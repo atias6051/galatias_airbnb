@@ -6,6 +6,7 @@ import './SpotShow.css'
 import ReserveSpot from './ReserveSpot';
 import SpotReviews from '../SpotReviews';
 import SpotGallery from './SpotGallery';
+import ReviewsDemo from '../SpotReviews/ReviewsDemo';
 
 function SpotShow(){
     const {spotId} = useParams()
@@ -35,12 +36,13 @@ function SpotShow(){
             <h3>Hosted by {spot?.owner.firstName} {spot?.owner.lastName}</h3>
             <p>{spot?.description}</p>
             <ReserveSpot spot={spot} />
-            <div className='spot-ratings'>
+            <ReviewsDemo spot={spot}/>
+            {/* <div className='spot-ratings'>
             <i className="fa-regular fa-star"></i>
             <h2>{spot.avgStarRating}</h2>
             <h2>·</h2>
             <h2>{spot.numReviews} Reviews</h2>
-            </div>
+            </div> */}
             <SpotReviews spotId={spotId} />
             </>
             }

@@ -26,11 +26,12 @@
 }
 
 #new-spot-form input{
-    border: 1px solid red;
+    border: 1px solid rgb(24, 27, 108);
     height: 25px;
     border-radius: 3px;
     margin: 5px 2px;
     padding: 5px;
+    background-color: rgb(201, 216, 249);
 }
 
 #new-spot-form label{

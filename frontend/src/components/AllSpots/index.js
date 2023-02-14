@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { useHistory, Link } from 'react-router-dom'
+import { useEffect } from 'react';
 import { getSpots } from '../../store/spots';
 import './AllSpots.css'
 import SpotTile from './SpotTile';
@@ -8,7 +7,6 @@ import SpotTile from './SpotTile';
 function AllSpots(){
     const spots = useSelector(state=>state.spots.allSpots)
     const dispatch = useDispatch()
-    const history = useHistory()
     useEffect(()=>{
         dispatch(getSpots())
     },[dispatch])

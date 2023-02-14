@@ -5,7 +5,7 @@ const checkPicFormat = url =>{
 }
 
 export const spotFormValidation = (spot) => {
-    const errors = {
+    try{const errors = {
         country: "",
         address: "",
         city: "",
@@ -38,11 +38,13 @@ export const spotFormValidation = (spot) => {
         errors.state = 'State is required'
         errors.invalid = true
     }
-    if(!spot.lat.length){
+    // if(!spot.lat.length){
+    if(isNaN(spot.lat || spot.lat === '')){
         errors.lat = 'Latitude is required'
         errors.invalid = true
     }
-    if(!spot.lng.length){
+    // if(!spot.lng.length){
+    if(isNaN(spot.lng || spot.lng === '')){
         errors.lng = 'Longitude is required'
         errors.invalid = true
     }
@@ -54,7 +56,8 @@ export const spotFormValidation = (spot) => {
         errors.name = 'Name is required'
         errors.invalid = true
     }
-    if(!spot.price.length){
+    // if(!spot.price.length){
+    if(isNaN(spot.price) || spot.price === ''){
         errors.price = 'Price is required'
         errors.invalid = true
     }
@@ -82,5 +85,7 @@ export const spotFormValidation = (spot) => {
         errors.image4 = 'Image URL must end in .png, .jpg, or .jpeg'
         errors.invalid = true
     }
-    return errors
+    return errors}catch{
+        console.log('errors from validation components')
+    }
 }

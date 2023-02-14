@@ -15,7 +15,6 @@ function SpotReviews({spotId}){
         return null
     }
     const reviews = Object.values(spotReviews)
-    console.log(reviews)
     return (
         <>
         {spotReviews && reviews.map(rev=>(
