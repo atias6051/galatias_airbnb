@@ -6,6 +6,7 @@ const LOAD_SINGLE = 'spots/LOAD_SINGLE'
 // const CREATE_SPOT = 'spots/CREATE_SPOT'
 const REMOVE_SPOT = 'spots/REMOVE_SPOT'
 const LOAD_USER_SPOTS = 'spots/LOAD_USER_SPOTS'
+const UPDATE_SPOT = 'spots/UPDATE_SPOT'
 
 const loadSpots = (spots) => {
     return{
@@ -36,6 +37,13 @@ const loadUserSpots = spots =>{
     }
 }
 
+const updateSpot = spot =>{
+    return{
+        type: UPDATE_SPOT,
+        spot
+    }
+}
+
 export const getSpots = () => async dispatch =>{
     const res = await csrfFetch('/api/spots')
     const spots = await res.json();
@@ -46,6 +54,7 @@ export const getSingleSpot = (spotId) => async dispatch => {
     const res = await csrfFetch(`/api/spots/${spotId}`)
     const spot = await res.json()
     dispatch(loadSingle(spot))
+    return spot
 }
 
 export const createSpot = (submitObj) => async dispatch => {
@@ -68,7 +77,6 @@ export const createSpot = (submitObj) => async dispatch => {
         })
     })
 
-    //adding non-preview images if exists
     if(images.image1.length){
         await csrfFetch(`/api/spots/${spotId}/images`,{
             method: 'POST',
@@ -124,6 +132,69 @@ export const deleteSpot = spotId => async dispatch => {
     dispatch(removeSpot(spotId))
 }
 
+export const editSpot = (submitObj,spotId) => async dispatch => {
+    const {newSpot,previewImage,images} = submitObj
+    const res = await csrfFetch(`/api/spots/${spotId}`,{
+        method: 'PUT',
+        body: JSON.stringify(newSpot)
+    })
+    const updatedSpotRes = await csrfFetch(`/api/spots/${spotId}`)
+    const updatedSpot = await updatedSpotRes.json()
+
+    const {SpotImages} = updatedSpot;
+    for(let img of SpotImages){
+        await csrfFetch(`/api/spot-images/${img.id}`,{method:'DELETE'})
+    }
+    const prevRes = await csrfFetch(`/api/spots/${spotId}/images`,{
+        method: 'POST',
+        body: JSON.stringify({
+            url: previewImage,
+            preview: true
+        })
+    })
+
+    if(images.image1.length){
+        await csrfFetch(`/api/spots/${spotId}/images`,{
+            method: 'POST',
+            body: JSON.stringify({
+                url: images.image1,
+                preview: false
+            })
+        })
+    }
+    if(images.image2.length){
+        await csrfFetch(`/api/spots/${spotId}/images`,{
+            method: 'POST',
+            body: JSON.stringify({
+                url: images.image2,
+                preview: false
+            })
+        })
+    }
+    if(images.image3.length){
+        await csrfFetch(`/api/spots/${spotId}/images`,{
+            method: 'POST',
+            body: JSON.stringify({
+                url: images.image3,
+                preview: false
+            })
+        })
+    }
+    if(images.image4.length){
+        await csrfFetch(`/api/spots/${spotId}/images`,{
+            method: 'POST',
+            body: JSON.stringify({
+                url: images.image4,
+                preview: false
+            })
+        })
+    }
+    const finalUpdatedSpotRes = await csrfFetch(`/api/spots/${spotId}`)
+    const finalUpdatedSpot = await finalUpdatedSpotRes.json()
+    dispatch(updateSpot(finalUpdatedSpot))
+}
+
+
 const initialState = {
     allSpots: {},
     singleSpot: {},
@@ -140,10 +211,16 @@ const spotsReducer = (state=initialState,action) => {
             return newState
         case LOAD_SINGLE:
             newState = {...newState,singleSpot:{...action.spot}}
+            newState.singleSpot.SpotImages = [...action.spot.SpotImages]
+
             return newState
         case REMOVE_SPOT:
             delete newState.allSpots[action.spotId]
-            newState = {...newState, allSpots: {...newState.allSpots}}
+            delete newState.currentUserSpots[action.spotId]
+            newState = {...newState,
+                allSpots: {...newState.allSpots},
+                currentUserSpots: {...newState.currentUserSpots}
+            }
             return newState
         case LOAD_USER_SPOTS:
             newState.currentUserSpots = {}
@@ -152,6 +229,11 @@ const spotsReducer = (state=initialState,action) => {
             })
             newState = {...newState,currentUserSpots:{...newState.currentUserSpots}}
             return newState;
+        case UPDATE_SPOT:
+            delete newState.allSpots[action.spot.id]
+            newState = {...newState, allSpots: {...newState.allSpots}}
+            newState.allSpots[action.spot.id] = {...action.spot}
+            return newState
         default:
             return state;
     }

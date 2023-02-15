@@ -1,117 +1,137 @@
 import {useState,useEffect} from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from 'react-router-dom';
-import { createSpot, getSingleSpot } from '../../store/spots';
+import { createSpot, editSpot, getSingleSpot } from '../../store/spots';
 import { spotFormValidation } from '../../utils/FormValidations';
-import './NewSpotForm.css'
+import '../NewSpotForm/NewSpotForm.css'
 
-function NewSpotForm(){
-
+function EditSpotForm(){
     const user = useSelector(state=>state.session.user)
+    // const allSpot = useSelector(state=>state.spots.allSpots)
     if(!user) history.push('/')
     const {spotId} = useParams()
+    // const spot = useSelector(state=>state.spots.allSpots[spotId])
+
+
     const dispatch = useDispatch()
     const history = useHistory()
 
+    const spot = useSelector(state=>state.spots.singleSpot)
 
-    // if(spotId) console.log("spotId",spotId)
-    // if(!spotId) console.log("no spot id!")
+    useEffect(()=>{
+        async function tester(){
+            dispatch(getSingleSpot(spotId))
+            // .then(res=>console.log("REs",res))
+
+        }
+        tester()
+    },[dispatch])
 
 
-    //input fields states
-    const [country,setCountry] = useState("")
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [lat, setLat] = useState("");
-    const [lng, setLng] = useState("");
-    const [description, setDescription] = useState("");
-    const [name, setName] = useState("");
-    const [price, setPrice] = useState("");
-    const [previewImage, setPreviewImage] = useState("");
-    const [image1, setImage1] = useState("");
-    const [image2, setImage2] = useState("");
-    const [image3, setImage3] = useState("");
-    const [image4, setImage4] = useState("");
+
 
     const [validationErrors, setValidationErros] = useState({})
     const [submitted,setSubmitted] = useState(false)
 
-    // console.log("%$#%$%",spot)
+    const [spotObject,setSpotObject] = useState({
+        address: '',
+        city: '',
+        state: '',
+        country: '',
+        lat: '',
+        lng: '',
+        name: '',
+        description: '',
+        price: '',
+        previewImage: '',
+        image1: '',
+        image2: '',
+        image3: '',
+        image4: '',
+    })
 
-//Validation errors useEffect
+
+    //Validation errors useEffect
     useEffect(()=>{
-        const spot = {
-            address,
-            city,
-            state,
-            country,
-            lat,
-            lng,
-            name,
-            description,
-            price,
-            previewImage,
-            image1,
-            image2,
-            image3,
-            image4
-        }
-        setValidationErros(spotFormValidation(spot))
-    },[country,address,city,state,lat,lng,description,name,price,previewImage,image1,image2,image3,image4])
+        setValidationErros(spotFormValidation(spotObject))
+    },[spotObject])
 
+    const handleChange = e =>{
+        const changeSpot = {...spotObject,[e.target.name]:e.target.value}
+        setSpotObject(changeSpot)
+    }
 
     const handleSubmit = async e =>{
         e.preventDefault()
         setSubmitted(true)
-        if(validationErrors.invalid) return null;
+        if(validationErrors.invalid){
+            console.log('returning null')
+            console.log(validationErrors)
+            return null;
+        }
 
         const submitObj = {
             newSpot: {
-                address,
-                city,
-                state,
-                country,
-                lat,
-                lng,
-                name,
-                description,
-                price
+                address: spotObject.address,
+                city: spotObject.city,
+                state: spotObject.state,
+                country: spotObject.country,
+                lat: spotObject.lat,
+                lng: spotObject.lng,
+                name: spotObject.name,
+                description: spotObject.description,
+                price: Number(spotObject.price),
             },
-            previewImage
+            previewImage: spotObject.previewImage
             ,
             images: {
-                image1,
-                image2,
-                image3,
-                image4
+                image1: spotObject.image1,
+                image2: spotObject.image2,
+                image3: spotObject.image3,
+                image4: spotObject.image4,
             }
         }
-
-        const newId = await dispatch(createSpot(submitObj))
-
-        setCountry("");
-        setAddress("");
-        setCity("");
-        setState("");
-        setLat("");
-        setLng("");
-        setDescription("");
-        setName("");
-        setPrice("");
-        setPreviewImage("");
-        setImage1("");
-        setImage2("");
-        setImage3("");
-        setImage4("");
-
-        history.push(`/spots/${newId}`)
+        console.log(submitObj)
+        dispatch(editSpot(submitObj,spotId))
+        history.push(`/spots/${spotId}`)
     }
+
+    useEffect(()=>{
+        try{if(spot){
+            if(Number(spot.owner.id) !== Number(user.id)){
+                history.push('/')
+            }
+            const spotFiller = {
+                ...spotObject,
+                address: spot.address,
+                city: spot.city,
+                state: spot.state,
+                country: spot.country,
+                lat: spot.lat,
+                lng: spot.lng,
+                name: spot.name,
+                description: spot.description,
+                price: Number(spot.price),
+            }
+            let index = 1;
+            spot.SpotImages.map(img=>{
+                if(img.preview === true){
+                    spotFiller.previewImage = img.url
+                }else{
+                    spotFiller[`image${index}`] = img.url
+                    index++
+                }
+            })
+            setSpotObject(spotFiller)
+        }}catch{
+            console.log("error2342424423")
+        }
+    },[spot])
 
     return(
         <section id="create-spot-section">
             <form id='new-spot-form'>
-                <h1>Create a new Spot</h1>
+                <h1>{`Edit Spot`}</h1>
                 <div>
                     <h3>Where's your place located?</h3>
                     <p>
@@ -128,8 +148,8 @@ function NewSpotForm(){
                         className='full-width'
                         type='text'
                         placeholder="Country"
-                        value={country}
-                        onChange={(e)=> setCountry(e.target.value)}
+                        value={spotObject.country}
+                        onChange={handleChange}
                         />
                 </label>
                 <label className='block-label'>
@@ -141,8 +161,8 @@ function NewSpotForm(){
                     className='full-width'
                     type='text'
                     placeholder="Address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    value={spotObject.address}
+                    onChange={handleChange}
                     />
                 </label>
 
@@ -153,8 +173,8 @@ function NewSpotForm(){
                     name="city"
                     type='text'
                     placeholder="City"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
+                    value={spotObject.city}
+                    onChange={handleChange}
                     />,
                 </label>
                 <label>
@@ -163,30 +183,30 @@ function NewSpotForm(){
                     name="state"
                     type='text'
                     placeholder="State"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
+                    value={spotObject.state}
+                    onChange={handleChange}
                     />
                 </label>
                 </div>
 
                 <label>
-                  Latitude
+                  Latitude {(submitted && validationErrors.lat.length)?<p className='form-error'>{validationErrors.lat}</p>:(<></>)}
                   <input
                     name='lat'
                     type='text'
                     placeholder="Latitude"
-                    value={lat}
-                    onChange={(e) => setLat(e.target.value)}
+                    value={spotObject.lat}
+                    onChange={handleChange}
                   />
                 </label>,
                 <label>
-                  Longitude
+                  Longitude {(submitted && validationErrors.lng.length)?<p className='form-error'>{validationErrors.lng}</p>:(<></>)}
                   <input
                     name='lng'
                     type='text'
                     placeholder="Longitude"
-                    value={lng}
-                    onChange={(e) => setLng(e.target.value)}
+                    value={spotObject.lng}
+                    onChange={handleChange}
                     />
                 </label>
                 <div>
@@ -200,8 +220,8 @@ function NewSpotForm(){
                 className='full-width'
                 rows='5'
                 placeholder="Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={spotObject.description}
+                onChange={handleChange}
                 />
                 </div>
                 {(submitted && validationErrors.description.length)?<p className='form-error'>{validationErrors.description}</p>:(<></>)}
@@ -217,8 +237,8 @@ function NewSpotForm(){
                 className='full-width'
                 type="text"
                 placeholder='Name your spot'
-                value={name}
-                onChange={e=> setName(e.target.value)}
+                value={spotObject.name}
+                onChange={handleChange}
                 />
                 {(submitted && validationErrors.name.length)?<p className='form-error'>{validationErrors.name}</p>:(<></>)}
                 <div>
@@ -229,8 +249,8 @@ function NewSpotForm(){
                     </p>
                 </div>
                 <span>$<input name="price" type="text" placeholder='Price per night (USD)'
-                value={price}
-                onChange={e=>setPrice(e.target.value)}
+                value={spotObject.price}
+                onChange={handleChange}
                 /></span>
                 {(submitted && validationErrors.price.length)?<p className='form-error'>{validationErrors.price}</p>:(<></>)}
                 <div>
@@ -243,40 +263,40 @@ function NewSpotForm(){
                 name='previewImage'
                 type="text"
                 placeholder='Preview Image URL'
-                value={previewImage}
-                onChange={e=>setPreviewImage(e.target.value)}
+                value={spotObject.previewImage}
+                onChange={handleChange}
                 />
                 {(submitted && validationErrors.previewImage.length)?<p className='form-error'>{validationErrors.previewImage}</p>:(<></>)}
                 <input className='block-label full-width'
                 name='image1'
                 type='text'
                 placeholder='Image URL'
-                value={image1}
-                onChange={e=>setImage1(e.target.value)}
+                value={spotObject.image1}
+                onChange={handleChange}
                 />
                 {(submitted && validationErrors.image1.length)?<p className='form-error'>{validationErrors.image1}</p>:(<></>)}
                 <input className='block-label full-width'
                 name="image2"
                 type='text'
                 placeholder='Image URL'
-                value={image2}
-                onChange={e => setImage2(e.target.value)}
+                value={spotObject.image2}
+                onChange={handleChange}
                 />
                 {(submitted && validationErrors.image2.length)?<p className='form-error'>{validationErrors.image2}</p>:(<></>)}
                 <input className='block-label full-width'
                 name='image3'
                 type='text'
                 placeholder='Image URL'
-                value={image3}
-                onChange={e => setImage3(e.target.value)}
+                value={spotObject.image3}
+                onChange={handleChange}
                 />
                 {(submitted && validationErrors.image3.length)?<p className='form-error'>{validationErrors.image3}</p>:(<></>)}
                 <input className='block-label full-width'
                 name="image4"
                 type='text'
                 placeholder='Image URL'
-                value={image4}
-                onChange={e => setImage4(e.target.value)}
+                value={spotObject.image4}
+                onChange={handleChange}
                 />
                 {(submitted && validationErrors.image4.length)?<p className='form-error'>{validationErrors.image4}</p>:(<></>)}
                 <button type='submit' onClick={handleSubmit}>Create Spot</button>
@@ -286,4 +306,4 @@ function NewSpotForm(){
     )
 }
 
-export default NewSpotForm
+export default EditSpotForm

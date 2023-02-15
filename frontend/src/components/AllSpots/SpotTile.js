@@ -11,11 +11,11 @@ function SpotTile({spot}){
                     <h3>{spot.city}, {spot.state}</h3>
                     <h3>${spot.price} night</h3>
                 </div>
-                <span ><i className="fa-regular fa-star"></i>{spot.avgRating>0?spot.avgRating:'New'}</span>
+                <span ><i className="fa-sharp fa-solid fa-star"></i> {spot.avgRating>0?spot.avgRating:'New'}</span>
+            </div>
             {path==='current'?(
                 <div><button>Delete</button><button>Update</button></div>
             ):(<></>)}
-            </div>
         </Link>
     )
 }
