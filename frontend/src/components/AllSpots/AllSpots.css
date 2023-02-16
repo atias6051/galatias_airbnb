@@ -10,3 +10,23 @@
     justify-content: center;
     align-items: center;
 }
+
+
+@media (max-width: 1199px) {
+  #all-spots-section {
+    grid-template-columns: repeat(3, 1fr);
+    margin: 10px;
+  }
+}
+
+@media (max-width: 991px) {
+  #all-spots-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  #all-spots-section {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
