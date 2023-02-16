@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from 'react-router-dom';
 import { createSpot, editSpot, getSingleSpot } from '../../store/spots';
 import { spotFormValidation } from '../../utils/FormValidations';
+import { emptySubmitObject } from '../../utils/generalUtils';
 import '../NewSpotForm/NewSpotForm.css'
 
 function EditSpotForm(){
@@ -31,24 +32,7 @@ function EditSpotForm(){
 
     const [validationErrors, setValidationErros] = useState({})
     const [submitted,setSubmitted] = useState(false)
-
-    const [spotObject,setSpotObject] = useState({
-        address: '',
-        city: '',
-        state: '',
-        country: '',
-        lat: '',
-        lng: '',
-        name: '',
-        description: '',
-        price: '',
-        previewImage: '',
-        image1: '',
-        image2: '',
-        image3: '',
-        image4: '',
-    })
-
+    const [spotObject,setSpotObject] = useState(emptySubmitObject)
 
     //Validation errors useEffect
     useEffect(()=>{
@@ -64,8 +48,6 @@ function EditSpotForm(){
         e.preventDefault()
         setSubmitted(true)
         if(validationErrors.invalid){
-            console.log('returning null')
-            console.log(validationErrors)
             return null;
         }
 
@@ -90,7 +72,6 @@ function EditSpotForm(){
                 image4: spotObject.image4,
             }
         }
-        console.log(submitObj)
         await dispatch(editSpot(submitObj,spotId))
         await dispatch(getSingleSpot(spotId))
         history.push(`/spots/${spotId}`)
@@ -175,7 +156,7 @@ function EditSpotForm(){
                     placeholder="City"
                     value={spotObject.city}
                     onChange={handleChange}
-                    />,
+                    />
                 </label>
                 <label>
                   State {(submitted && validationErrors.state.length)?<p className='form-error'>{validationErrors.state}</p>:(<></>)}
@@ -193,17 +174,17 @@ function EditSpotForm(){
                   Latitude {(submitted && validationErrors.lat.length)?<p className='form-error'>{validationErrors.lat}</p>:(<></>)}
                   <input
                     name='lat'
-                    type='text'
+                    type='number'
                     placeholder="Latitude"
                     value={spotObject.lat}
                     onChange={handleChange}
                   />
-                </label>,
+                </label>
                 <label>
                   Longitude {(submitted && validationErrors.lng.length)?<p className='form-error'>{validationErrors.lng}</p>:(<></>)}
                   <input
                     name='lng'
-                    type='text'
+                    type='number'
                     placeholder="Longitude"
                     value={spotObject.lng}
                     onChange={handleChange}
@@ -248,7 +229,7 @@ function EditSpotForm(){
                     in search results.
                     </p>
                 </div>
-                <span>$<input name="price" type="text" placeholder='Price per night (USD)'
+                <span>$<input name="price" className='width98' type="text" placeholder='Price per night (USD)'
                 value={spotObject.price}
                 onChange={handleChange}
                 /></span>
@@ -299,7 +280,7 @@ function EditSpotForm(){
                 onChange={handleChange}
                 />
                 {(submitted && validationErrors.image4.length)?<p className='form-error'>{validationErrors.image4}</p>:(<></>)}
-                <button type='submit' onClick={handleSubmit}>Update your Spot</button>
+                <button type='submit' className='standard-button update-butt' onClick={handleSubmit}>Update your Spot</button>
             </form>
 
         </section>

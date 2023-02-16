@@ -14,6 +14,10 @@ function NewSpotForm(){
     const history = useHistory()
 
 
+    // if(spotId) console.log("spotId",spotId)
+    // if(!spotId) console.log("no spot id!")
+
+
     //input fields states
     const [country,setCountry] = useState("")
     const [address, setAddress] = useState("");
@@ -33,8 +37,9 @@ function NewSpotForm(){
     const [validationErrors, setValidationErros] = useState({})
     const [submitted,setSubmitted] = useState(false)
 
+    // console.log("%$#%$%",spot)
 
-    //Validation errors useEffect
+//Validation errors useEffect
     useEffect(()=>{
         const spot = {
             address,
@@ -141,18 +146,18 @@ function NewSpotForm(){
                 <label>
                   <span>City</span> {(submitted && validationErrors.city.length)?<p className='form-error'>{validationErrors.city}</p>:(<></>)}
                   <input
-                    // className='half-width'
+                    className='half-width'
                     name="city"
                     type='text'
                     placeholder="City"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    />
+                    />,
                 </label>
                 <label>
                   State {(submitted && validationErrors.state.length)?<p className='form-error'>{validationErrors.state}</p>:(<></>)}
                   <input
-                    // className='half-width'
+                    className='half-width'
                     name="state"
                     type='text'
                     placeholder="State"
@@ -188,17 +193,17 @@ function NewSpotForm(){
                   Latitude
                   <input
                     name='lat'
-                    type='number'
+                    type='text'
                     placeholder="Latitude"
                     value={lat}
                     onChange={(e) => setLat(e.target.value)}
                   />
-                </label>
+                </label>,
                 <label>
                   Longitude
                   <input
                     name='lng'
-                    type='number'
+                    type='text'
                     placeholder="Longitude"
                     value={lng}
                     onChange={(e) => setLng(e.target.value)}
@@ -213,7 +218,7 @@ function NewSpotForm(){
                 <textarea
                 name="description"
                 className='full-width'
-                rows='10'
+                rows='5'
                 placeholder="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -243,7 +248,7 @@ function NewSpotForm(){
                     in search results.
                     </p>
                 </div>
-                <span >$<input name="price" className='width98'  type="text" placeholder='Price per night (USD)'
+                <span>$<input name="price" type="text" placeholder='Price per night (USD)'
                 value={price}
                 onChange={e=>setPrice(e.target.value)}
                 /></span>
@@ -294,11 +299,153 @@ function NewSpotForm(){
                 onChange={e => setImage4(e.target.value)}
                 />
                 {(submitted && validationErrors.image4.length)?<p className='form-error'>{validationErrors.image4}</p>:(<></>)}
-                <button type='submit' className='standard-button form-butt' onClick={handleSubmit}>Create</button>
+                <button type='submit' className='standard-button' onClick={handleSubmit}>Create</button>
             </form>
 
         </section>
     )
 }
 
-export default NewSpotForm
+// export default NewSpotForm
+
+/////////////////////////////
+
+function FormTest(){
+    return(
+        <section id='spot-form-section'>
+        <div id='spot-form-container'>
+            <h2>Update your Spot</h2>
+            <h3>Where's your place located?</h3>
+            <p>Guests will only get your exact address once they booked a reservation</p>
+            {/* <form className='spot-form' onSubmit={handleSubmit}> */}
+            <form className='spot-form' >
+                <div id='spot-form-area-1'>
+                    {/* country */}
+                    <label>
+                        Country
+                    <input
+                        name='country'
+                        type="text"
+                        // value={spotStateObject.country}
+                        // onChange={handleChange}
+                        required
+                        placeholder="Country"
+                    />
+                    </label>
+                    {/* Street address */}
+                    <label>
+                        Street Address
+                    <input
+                        name='address'
+                        type="text"
+                        // value={spotStateObject.address}
+                        // onChange={handleChange}
+                        required
+                        placeholder="Address"
+                    />
+                    </label>
+                </div>
+                <div id='spot-form-area-2'>
+                    {/* City */}
+                    <label id='city'>
+                        City
+                    <input
+                        type="text"
+                        // value={spotStateObject.city}
+                        // onChange={handleChange}
+                        required
+                        placeholder="City"
+                    />
+                    </label>
+                    <div class='comma'>,</div>
+                    {/* State */}
+                    <label id='state'>
+                        State
+                    <input
+                        type="text"
+                        // value={spotStateObject.state}
+                        // onChange={handleChange}
+                        required
+                        placeholder="State"
+                    />
+                    </label>
+                </div>
+                <div id='spot-form-area-3'>
+                    {/* Latitude */}
+                    <label id='Latitude'>
+                        Latitude
+                    <input
+                        type="number"
+                        // value={spotStateObject.latitude}
+                        // onChange={handleChange}
+                        required
+                        placeholder="Latitude"
+                    />
+                    </label>
+                    <div class='comma'>,</div>
+                    {/* Longitude */}
+                    <label id='Longitude'>
+                        Longitude
+                    <input
+                        type="number"
+                        // value={spotStateObject.longitude}
+                        // onChange={handleChange}
+                        required
+                        placeholder="Longitude"
+                    />
+                    </label>
+                </div>
+                {/* Description */}
+                <div id='description'>
+                    <h3>Describe your place to guests</h3>
+                    <p>Mention the best features of your space, any special amentities like
+                        fast wifi or parking, and what you love about the neighborhood.</p>
+                    <textarea
+                        type="text"
+                        // value={spotStateObject.description}
+                        // onChange={handleChange}
+                        required
+                        placeholder='Please write at least 30 characters'
+                    >
+                    </textarea>
+                </div>
+                {/* name */}
+                <div id='title'>
+                    <h2>Create a title for your spot</h2>
+                    <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
+                    <label>
+                        Name
+                    <input
+                        type="text"
+                        // value={spotStateObject.name}
+                        // onChange={handleChange}
+                        required
+                        placeholder="Name of your spot"
+                    />
+                    </label>
+                </div>
+                {/* price */}
+                <div id='price'>
+                    <h2>Set a base price for your spot</h2>
+                    <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+                    <label>
+                        $
+                    <input
+                        type="text"
+                        // value={spotStateObject.price}
+                        // onChange={handleChange}
+                        required
+                        placeholder='Price per night (USD)'
+                    />
+                    </label>
+                </div>
+                <div id='submit-container'>
+                    <button type="submit" id='button'>Create Spot</button>
+                </div>
+            </form>
+        </div>
+    </section>
+    )
+}
+
+export default FormTest

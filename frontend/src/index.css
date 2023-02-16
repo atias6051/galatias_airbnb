@@ -49,3 +49,15 @@
     display: flex;
     flex-grow: 1;
 }
+
+.main-color{
+    background-color: cadetblue;
+    color: white;
+}
+
+.color-hover{
+
+}
+.color-hover:hover{
+    color: blue;
+}

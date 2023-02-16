@@ -8,6 +8,7 @@
     box-shadow: 1px 5px 5px gray;
     transition: 0.25s ease-in-out;
     color: black;
+    padding-bottom: 10px;
 }
 .spot-card *{
     text-decoration: none;

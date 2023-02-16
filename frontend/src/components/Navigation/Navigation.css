@@ -16,13 +16,15 @@
 .profile-dropdown{
     position: absolute;
     padding: 15px;
-    background-color: beige;
+    background-color: rgb(255, 255, 255);
     border: 1px solid blue;
     border-top: none;
     list-style: none;
     top: 75px;
     right: 10px;
     border-radius: 5px;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
     /* height: 200px; */
     width: 180px;
     z-index: 1;
@@ -37,7 +39,9 @@
     /* display: flex; */
     /* justify-content: center; */
     font-size: 2em;
-    border-radius: 5px;
+    border-radius: 15px;
+    background-color: azure;
+    border: 2px solid rgb(0, 85, 255);
 }
 .logged-in{
     color: rgb(31, 132, 132);
@@ -50,6 +54,7 @@
     text-decoration: none;
     margin-right: 10px;
     font-weight: bold;
+    text-transform: uppercase;
 }
 /* .testClass{
     color: red;
