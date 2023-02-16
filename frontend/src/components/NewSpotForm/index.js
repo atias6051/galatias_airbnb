@@ -119,37 +119,34 @@ function NewSpotForm(){
                         reservation.
                     </p>
                 </div>
-                <label className='block-label'>
+                <label>
                     <div>
                     Country {(submitted && validationErrors.country.length)?<p className='form-error'>{validationErrors.country}</p>:(<></>)}
                     </div>
                     <input
                         name="country"
-                        className='full-width'
                         type='text'
                         placeholder="Country"
                         value={country}
                         onChange={(e)=> setCountry(e.target.value)}
                         />
                 </label>
-                <label className='block-label'>
+                <label>
                     <div>
                     Street Address {(submitted && validationErrors.address.length)?<p className='form-error'>{validationErrors.address}</p>:(<></>)}
                     </div>
                   <input
                     name="address"
-                    className='full-width'
                     type='text'
                     placeholder="Address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     />
                 </label>
-
-                <div className='block-label'>
                 <label>
                   <span>City</span> {(submitted && validationErrors.city.length)?<p className='form-error'>{validationErrors.city}</p>:(<></>)}
                   <input
+                    className='half-width'
                     name="city"
                     type='text'
                     placeholder="City"
@@ -160,6 +157,7 @@ function NewSpotForm(){
                 <label>
                   State {(submitted && validationErrors.state.length)?<p className='form-error'>{validationErrors.state}</p>:(<></>)}
                   <input
+                    className='half-width'
                     name="state"
                     type='text'
                     placeholder="State"
@@ -167,8 +165,30 @@ function NewSpotForm(){
                     onChange={(e) => setState(e.target.value)}
                     />
                 </label>
-                </div>
-
+                {/* <div className='inline-block'>
+                <label>
+                  <span>City</span> {(submitted && validationErrors.city.length)?<p className='form-error'>{validationErrors.city}</p>:(<></>)}
+                  <input
+                    className='half-width'
+                    name="city"
+                    type='text'
+                    placeholder="City"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    />,
+                </label>
+                <label>
+                  State {(submitted && validationErrors.state.length)?<p className='form-error'>{validationErrors.state}</p>:(<></>)}
+                  <input
+                    className='half-width'
+                    name="state"
+                    type='text'
+                    placeholder="State"
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                    />
+                </label>
+                </div> */}
                 <label>
                   Latitude
                   <input

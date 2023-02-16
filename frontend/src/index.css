@@ -45,3 +45,7 @@
 .bold{
     font-weight: bold;
 }
+.flex-row{
+    display: flex;
+    flex-grow: 1;
+}

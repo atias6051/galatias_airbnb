@@ -4,6 +4,7 @@ import thunk from "redux-thunk";
 const LOAD_SPOTS = 'spots/LOAD_SPOTS'
 const LOAD_SINGLE = 'spots/LOAD_SINGLE'
 // const CREATE_SPOT = 'spots/CREATE_SPOT'
+const CLEAR_SINGLE = 'spots/CLEAR_SINGLE'
 const REMOVE_SPOT = 'spots/REMOVE_SPOT'
 const LOAD_USER_SPOTS = 'spots/LOAD_USER_SPOTS'
 const UPDATE_SPOT = 'spots/UPDATE_SPOT'
@@ -26,6 +27,11 @@ const removeSpot = spotId =>{
     return{
         type: REMOVE_SPOT,
         spotId
+    }
+}
+export const clearSingleSpot = () => {
+    return{
+        type: CLEAR_SINGLE
     }
 }
 
@@ -55,6 +61,7 @@ export const getSingleSpot = (spotId) => async dispatch => {
     dispatch(loadSingle(spot))
     return spot
 }
+
 
 export const createSpot = (submitObj) => async dispatch => {
     const {newSpot,previewImage,images} = submitObj
@@ -211,8 +218,10 @@ const spotsReducer = (state=initialState,action) => {
         case LOAD_SINGLE:
             newState = {...newState,singleSpot:{...action.spot}}
             newState.singleSpot.SpotImages = [...action.spot.SpotImages]
-
             return newState
+        case CLEAR_SINGLE:
+            const clearObj = {}
+            return {...newState,singleSpot:clearObj}
         case REMOVE_SPOT:
             delete newState.allSpots[action.spotId]
             delete newState.currentUserSpots[action.spotId]
