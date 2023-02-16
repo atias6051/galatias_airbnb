@@ -15,13 +15,14 @@
     align-items: center;
 } */
 .login-form-form{
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 40vh;
 }
 .login-form-form input{
-    margin: 10px;
+    margin: auto;
     display: block;
 }
 .login-form-form label{

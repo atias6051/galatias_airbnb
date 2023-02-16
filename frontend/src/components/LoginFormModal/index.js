@@ -71,11 +71,11 @@ function LoginFormModal() {
         </label>
         <button
         type="submit"
-        className="standard-button full-width"
+        className="standard-button main-color full-width hover-link"
         disabled={disableButton}
         >Log In
         </button>
-        <h5 className="hover-link padd-10" onClick={loginDemo}>Log in as Demo User</h5>
+        <h5 className="hover-link color-hover padd-10" onClick={loginDemo}>Log in as Demo User</h5>
       </form>
     </div>
   );

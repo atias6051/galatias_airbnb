@@ -1,0 +1,16 @@
+export const emptySubmitObject = {
+        address: '',
+        city: '',
+        state: '',
+        country: '',
+        lat: '',
+        lng: '',
+        name: '',
+        description: '',
+        price: '',
+        previewImage: '',
+        image1: '',
+        image2: '',
+        image3: '',
+        image4: '',
+}

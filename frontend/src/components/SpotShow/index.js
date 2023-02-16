@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { deleteSpot, getSingleSpot} from '../../store/spots';
+import { clearSingleSpot, deleteSpot, getSingleSpot} from '../../store/spots';
 import { useHistory, useParams } from 'react-router-dom';
 import './SpotShow.css'
 import ReserveSpot from './ReserveSpot';
@@ -17,6 +17,8 @@ function SpotShow(){
 
     useEffect(()=>{
         dispatch(getSingleSpot(spotId))
+
+        return  () => dispatch(clearSingleSpot())
     },[dispatch])
 
     if(Object.keys(spot).length === 0) return null

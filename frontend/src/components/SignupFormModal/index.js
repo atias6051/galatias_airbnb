@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
@@ -13,7 +13,20 @@ function SignupFormModal() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
+  const [disableButton, setDisableButton] = useState(true)
   const { closeModal } = useModal();
+
+  useEffect(()=>{
+    if(email.length &&
+      (username.length && username.length >= 4) &&
+      firstName.length &&
+      lastName.length &&
+      (password.length && password.length >= 6) &&
+      confirmPassword.length && confirmPassword === password)
+      setDisableButton(false)
+    else setDisableButton(true)
+  },[email,username,firstName,lastName,password,confirmPassword])
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,15 +43,17 @@ function SignupFormModal() {
   };
 
   return (
-    <>
+    <div id="sing-up-div">
       <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} id='sign-up-form'>
         <ul>
           {errors.map((error, idx) => <li key={idx}>{error}</li>)}
         </ul>
         <label>
-          Email
+          {/* Email */}
           <input
+            placeholder="Email"
+            className="full-width-input"
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -46,8 +61,10 @@ function SignupFormModal() {
           />
         </label>
         <label>
-          Username
+          {/* Username */}
           <input
+            placeholder="Username"
+            className="full-width-input"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -55,8 +72,10 @@ function SignupFormModal() {
           />
         </label>
         <label>
-          First Name
+          {/* First Name */}
           <input
+            placeholder="First Name"
+            className="full-width-input"
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
@@ -64,8 +83,10 @@ function SignupFormModal() {
           />
         </label>
         <label>
-          Last Name
+          {/* Last Name */}
           <input
+            placeholder="Last Name"
+            className="full-width-input"
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
@@ -73,8 +94,10 @@ function SignupFormModal() {
           />
         </label>
         <label>
-          Password
+          {/* Password */}
           <input
+            placeholder="Password"
+            className="full-width-input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -82,17 +105,19 @@ function SignupFormModal() {
           />
         </label>
         <label>
-          Confirm Password
+          {/* Confirm Password */}
           <input
+            placeholder="Confirm Password"
+            className="full-width-input"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
         </label>
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={disableButton} className="standard-button main-color full-width">Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 
