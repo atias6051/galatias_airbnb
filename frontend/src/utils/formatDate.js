@@ -4,5 +4,3 @@ export default function formatDate(date){
     const [year,month] = date.split('-')
     return [monthsArr[month-1], year].join(' ')
 }
-
-// console.log(formatDate(tester))

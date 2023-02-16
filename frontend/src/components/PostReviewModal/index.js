@@ -81,7 +81,6 @@ function PostReviewModal(){
         onMouseOver={handleHover}
         onMouseOut={resetStars}
         onClick={e=>setStarsPicked(e.target.id)}
-        // onMouseOver={(e)=> console.log(e.target.id)}
         ></i>
         <i
         id={2}
