@@ -49,7 +49,7 @@ function ProfileButton({ user }) {
       {user ? (
         <Link className="create-spot-nav-link" to="/spots/new">Create a New Spot</Link>
       ):(<></>)}
-      <button id="profile-button" className={user?'logged-in' : 'no-user'} onClick={openMenu}>
+      <button id="profile-button" className={user?'logged-in hover-link' : 'no-user hover-link'} onClick={openMenu}>
         <i className="fas fa-user-circle" />
       </button>
       </div>
@@ -58,16 +58,17 @@ function ProfileButton({ user }) {
           <>
             {/* <li>{user.username}</li>
             <li>{user.firstName} {user.lastName}</li> */}
-            <li>Hello, {user.firstName}</li>
+            <li className="bold-text ">Hello, {user.firstName}</li>
             <li>{user.email}</li>
-            <li><Link to='/spots/current'>Manage Spots</Link></li>
+            <li onClick={closeMenu}><Link className="link-styling standard-button" to='/spots/current'>Manage Spots</Link></li>
             <li>
-              <button className="hover-link" onClick={logout}>Log Out</button>
+              <button className="hover-link link-styling standard-button" onClick={logout}>Log Out</button>
             </li>
           </>
         ) : (
           <>
             <OpenModalMenuItem
+              nameClass="dev"
               itemText="Log In"
               onItemClick={closeMenu}
               modalComponent={<LoginFormModal />}
@@ -75,6 +76,7 @@ function ProfileButton({ user }) {
             <OpenModalMenuItem
               itemText="Sign Up"
               onItemClick={closeMenu}
+              nameClass="standard-button"
               modalComponent={<SignupFormModal />}
             />
           </>
