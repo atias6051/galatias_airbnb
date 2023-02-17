@@ -89,3 +89,9 @@
     background-color: rgb(99, 148, 132);
     color: aliceblue;
 }
+
+.top-border{
+    margin-top: 10px;
+    padding-top: 5px;
+    border-top: 2px solid black;
+}

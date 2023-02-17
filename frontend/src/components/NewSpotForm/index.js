@@ -204,7 +204,7 @@ function NewSpotForm(){
                     onChange={(e) => setLng(e.target.value)}
                     />
                 </label>
-                <div>
+                <div className='top-border'>
                     <h2>Describe your place to guests</h2>
                     <p>
                     Mention the best features of your space, any special amentities like
@@ -220,13 +220,12 @@ function NewSpotForm(){
                 />
                 </div>
                 {(submitted && validationErrors.description.length)?<p className='form-error'>{validationErrors.description}</p>:(<></>)}
-                <div>
+                <div className='top-border'>
                     <h2>Create a title for your spot</h2>
                     <p>
                     Catch guests' attention with a spot title that highlights what makes
                     your place special.
                     </p>
-                </div>
                 <input
                 name="name"
                 className='full-width'
@@ -235,20 +234,21 @@ function NewSpotForm(){
                 value={name}
                 onChange={e=> setName(e.target.value)}
                 />
+                </div>
                 {(submitted && validationErrors.name.length)?<p className='form-error'>{validationErrors.name}</p>:(<></>)}
-                <div>
+                <div className='top-border'>
                     <h2>Set a base price for your spot</h2>
                     <p>
                     Competitive pricing can help your listing stand out and rank higher
                     in search results.
                     </p>
                 </div>
-                <span >$<input name="price" className='width98'  type="text" placeholder='Price per night (USD)'
+                <div >$<input name="price" className='width98'  type="text" placeholder='Price per night (USD)'
                 value={price}
                 onChange={e=>setPrice(e.target.value)}
-                /></span>
+                /></div>
                 {(submitted && validationErrors.price.length)?<p className='form-error'>{validationErrors.price}</p>:(<></>)}
-                <div>
+                <div className='top-border'>
                     <h2>Liven up your spot with photos</h2>
                     <p>
                     Submit a link to at least one photo to publish your spot
