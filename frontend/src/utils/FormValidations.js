@@ -56,8 +56,12 @@ export const spotFormValidation = (spot) => {
         errors.name = 'Name is required'
         errors.invalid = true
     }
+    if(spot.name.length>=50){
+        errors.name = 'Spot Name needs to be under 50 Characters'
+        errors.invalid = true
+    }
     // if(!spot.price.length){
-    if(isNaN(spot.price) || spot.price === ''){
+    if(isNaN(spot.price) || spot.price === '' || spot.price < 1){
         errors.price = 'Price is required'
         errors.invalid = true
     }
