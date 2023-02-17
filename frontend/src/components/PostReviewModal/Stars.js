@@ -22,7 +22,6 @@ function Stars(){
         setStarsObj(newStars)
     }
     const handleHover = e => {
-        console.log("GEtIT!!!!")
         const newStars = {}
         for(let i = 1;i<6;i++){
             if(i<=e.target.id){

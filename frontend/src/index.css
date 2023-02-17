@@ -61,3 +61,16 @@
 .color-hover:hover{
     color: blue;
 }
+.title-h1{
+    font-size: 2.5em;
+}
+.main-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.bold-text{
+    font-weight: bold;
+}

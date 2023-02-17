@@ -44,7 +44,6 @@ function EditReviewModal({reviewId}){
             review: description,
             stars: starsPicked
         }
-        console.log(submitObj)
 
         await dispatch(updateReview(submitObj,review.id,spot.id))
         await dispatch(getSingleSpot(spot.id))
@@ -91,7 +90,6 @@ function EditReviewModal({reviewId}){
         onMouseOver={handleHover}
         onMouseOut={resetStars}
         onClick={e=>setStarsPicked(e.target.id)}
-        // onMouseOver={(e)=> console.log(e.target.id)}
         ></i>
         <i
         id={2}

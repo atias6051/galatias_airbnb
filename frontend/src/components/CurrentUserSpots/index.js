@@ -21,8 +21,8 @@ function CurrentUserSpots(){
     // }
     // if(Object.values(spots).length === 0 ) return null
     return (
-        <>
-        <h1>Manage Spots</h1>
+        <section className="main-container">
+        <h1 className='title-h1'>Manage Spots</h1>
         <section id='all-spot-flex'>
         <section id='all-spots-section'>
         {spots && Object.values(spots).map(spot=>(
@@ -31,7 +31,7 @@ function CurrentUserSpots(){
 
         </section>
         </section>
-        </>
+        </section>
     )
 }
 

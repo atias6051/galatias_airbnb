@@ -121,7 +121,7 @@ export const createSpot = (submitObj) => async dispatch => {
     }
     const finalRes = await csrfFetch(`/api/spots/${spotId}`)
     const singleSpot = await finalRes.json()
-    dispatch(loadSingle(singleSpot))
+    await dispatch(loadSingle(singleSpot))
     return spotId
 }
 
