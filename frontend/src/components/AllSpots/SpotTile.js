@@ -15,6 +15,7 @@ function SpotTile({spot}){
             <div  className='spot-preview-info'>
                 <div>
                     <h4>{spot.name}</h4>
+                    <h4>${spot.price} night</h4>
                 </div>
                 <span className='ratings-span'><i className="fa-sharp fa-solid fa-star"></i> {spot.avgRating>0?parseFloat(spot.avgRating).toFixed(1):'New'}</span>
             </div>

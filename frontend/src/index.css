@@ -74,3 +74,18 @@
 .bold-text{
     font-weight: bold;
 }
+
+.sing-log-buttons{
+    display: flex;
+    padding: 2px;
+    font-weight: bold;
+    justify-content: center;
+    border: 1px solid cadetblue;
+    border-radius: 3px;
+    transition: 0.2s ease-in-out;
+}
+.sing-log-buttons:hover{
+    cursor: pointer;
+    background-color: rgb(99, 148, 132);
+    color: aliceblue;
+}
