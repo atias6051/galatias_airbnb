@@ -11,7 +11,7 @@ function EditSpotForm(){
     // const allSpot = useSelector(state=>state.spots.allSpots)
 
     const {spotId} = useParams()
-    // const spot = useSelector(state=>state.spots.allSpots[spotId])
+    // const storeSpot = useSelector(state=>state.spots.allSpots[spotId])
 
 
     const dispatch = useDispatch()
@@ -21,9 +21,11 @@ function EditSpotForm(){
     if(!user) history.push('/')
 
     useEffect(()=>{
-        async function tester(){
+        async function inputsFiller(){
             const spot = await dispatch(getSingleSpot(spotId))
-            // console.log("Spot$$$$$$", spot)
+            if(Number(spot.ownerId) !== Number(user.id)){
+                return history.push('/')
+            }
             const spotFiller = {
                 ...spotObject,
                 address: spot.address,
@@ -47,7 +49,9 @@ function EditSpotForm(){
             })
             setSpotObject(spotFiller)
         }
-        tester()
+
+        inputsFiller()
+
     },[dispatch])
 
 
@@ -99,38 +103,6 @@ function EditSpotForm(){
         await dispatch(getSingleSpot(spotId))
         history.push(`/spots/${spotId}`)
     }
-
-    // useEffect(()=>{
-    //     try{if(spot){
-    //         if(Number(spot.owner.id) !== Number(user.id)){
-    //             history.push('/')
-    //         }
-    //         const spotFiller = {
-    //             ...spotObject,
-    //             address: spot.address,
-    //             city: spot.city,
-    //             state: spot.state,
-    //             country: spot.country,
-    //             lat: spot.lat,
-    //             lng: spot.lng,
-    //             name: spot.name,
-    //             description: spot.description,
-    //             price: Number(spot.price),
-    //         }
-    //         let index = 1;
-    //         spot.SpotImages.map(img=>{
-    //             if(img.preview === true){
-    //                 spotFiller.previewImage = img.url
-    //             }else{
-    //                 spotFiller[`image${index}`] = img.url
-    //                 index++
-    //             }
-    //         })
-    //         setSpotObject(spotFiller)
-    //     }}catch{
-    //         console.log("error2342424423")
-    //     }
-    // },[spot])
 
     return(
         <section id="create-spot-section">
