@@ -14,6 +14,8 @@ function CurrentUserSpots(){
     const history = useHistory()
     useEffect(()=>{
         dispatch(getUserSpots())
+
+        //add clear userSpots())
     },[dispatch])
 
     // const handleDelete = (spotId) =>{

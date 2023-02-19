@@ -17,12 +17,35 @@ function EditSpotForm(){
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const spot = useSelector(state=>state.spots.singleSpot)
+    // const spot = useSelector(state=>state.spots.singleSpot)
     if(!user) history.push('/')
 
     useEffect(()=>{
         async function tester(){
-            dispatch(getSingleSpot(spotId))
+            const spot = await dispatch(getSingleSpot(spotId))
+            // console.log("Spot$$$$$$", spot)
+            const spotFiller = {
+                ...spotObject,
+                address: spot.address,
+                city: spot.city,
+                state: spot.state,
+                country: spot.country,
+                lat: spot.lat,
+                lng: spot.lng,
+                name: spot.name,
+                description: spot.description,
+                price: Number(spot.price),
+            }
+            let index = 1;
+            spot.SpotImages.map(img=>{
+                if(img.preview === true){
+                    spotFiller.previewImage = img.url
+                }else{
+                    spotFiller[`image${index}`] = img.url
+                    index++
+                }
+            })
+            setSpotObject(spotFiller)
         }
         tester()
     },[dispatch])
@@ -77,37 +100,37 @@ function EditSpotForm(){
         history.push(`/spots/${spotId}`)
     }
 
-    useEffect(()=>{
-        try{if(spot){
-            if(Number(spot.owner.id) !== Number(user.id)){
-                history.push('/')
-            }
-            const spotFiller = {
-                ...spotObject,
-                address: spot.address,
-                city: spot.city,
-                state: spot.state,
-                country: spot.country,
-                lat: spot.lat,
-                lng: spot.lng,
-                name: spot.name,
-                description: spot.description,
-                price: Number(spot.price),
-            }
-            let index = 1;
-            spot.SpotImages.map(img=>{
-                if(img.preview === true){
-                    spotFiller.previewImage = img.url
-                }else{
-                    spotFiller[`image${index}`] = img.url
-                    index++
-                }
-            })
-            setSpotObject(spotFiller)
-        }}catch{
-            console.log("error2342424423")
-        }
-    },[spot])
+    // useEffect(()=>{
+    //     try{if(spot){
+    //         if(Number(spot.owner.id) !== Number(user.id)){
+    //             history.push('/')
+    //         }
+    //         const spotFiller = {
+    //             ...spotObject,
+    //             address: spot.address,
+    //             city: spot.city,
+    //             state: spot.state,
+    //             country: spot.country,
+    //             lat: spot.lat,
+    //             lng: spot.lng,
+    //             name: spot.name,
+    //             description: spot.description,
+    //             price: Number(spot.price),
+    //         }
+    //         let index = 1;
+    //         spot.SpotImages.map(img=>{
+    //             if(img.preview === true){
+    //                 spotFiller.previewImage = img.url
+    //             }else{
+    //                 spotFiller[`image${index}`] = img.url
+    //                 index++
+    //             }
+    //         })
+    //         setSpotObject(spotFiller)
+    //     }}catch{
+    //         console.log("error2342424423")
+    //     }
+    // },[spot])
 
     return(
         <section id="create-spot-section">
