@@ -26,16 +26,32 @@ export const spotFormValidation = (spot) => {
         errors.country = 'Country is required'
         errors.invalid = true
     }
+    if(spot.country.length>=100){
+        errors.country = 'Country must be less than 100 characters'
+        errors.invalid = true
+    }
     if(!spot.address.length){
         errors.address = 'Address is required'
+        errors.invalid = true
+    }
+    if(spot.address.length>=200){
+        errors.address = 'address must be less than 200 characters'
         errors.invalid = true
     }
     if(!spot.city.length){
         errors.city = 'City is required'
         errors.invalid = true
     }
+    if(spot.city.length>=100){
+        errors.city= 'City must be less than 100 characters'
+        errors.invalid = true
+    }
     if(!spot.state.length){
         errors.state = 'State is required'
+        errors.invalid = true
+    }
+    if(spot.state.length>=100){
+        errors.state= 'State must be less than 100 characters'
         errors.invalid = true
     }
     // if(!spot.lat.length){
