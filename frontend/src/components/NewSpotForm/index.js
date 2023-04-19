@@ -3,8 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from 'react-router-dom';
 import { createSpot, getSingleSpot } from '../../store/spots';
 import { spotFormValidation } from '../../utils/FormValidations';
+import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import PlacesAutocomplete, {
+    geocodeByAddress,
+    geocodeByPlaceId,
+    getLatLng,
+} from 'react-places-autocomplete';
 import './NewSpotForm.css'
-
+const libraries = ['places']
 function NewSpotForm(){
 
     const user = useSelector(state=>state.session.user)
@@ -33,7 +39,10 @@ function NewSpotForm(){
     const [validationErrors, setValidationErros] = useState({})
     const [submitted,setSubmitted] = useState(false)
 
-
+    const {isLoaded} = useLoadScript({
+        googleMapsApiKey: process.env.REACT_APP_MAP_API_KEY,
+        libraries:libraries
+    });
     //Validation errors useEffect
     useEffect(()=>{
         const spot = {
@@ -55,6 +64,25 @@ function NewSpotForm(){
         setValidationErros(spotFormValidation(spot))
     },[country,address,city,state,lat,lng,description,name,price,previewImage,image1,image2,image3,image4])
 
+    const handleSelect = async address => {
+        setAddress(()=>address)
+        const results = await geocodeByAddress(address)
+        const latlng = await getLatLng(results[0])
+        const addressArr = results[0].formatted_address.split(',').map(el=>el.trim())
+        console.log('--->',results[0])
+        console.log('--->',latlng)
+        console.log('--->',addressArr)
+        setAddress(()=>addressArr[0])
+        setCity(()=>addressArr[1])
+        setState(()=>addressArr[2].split(' ')[0])
+        setCountry(()=>addressArr[3])
+        setLat(()=>latlng.lat)
+        setLng(()=>latlng.lng)
+        // geocodeByAddress(address)
+        //   .then(results => getLatLng(results[0]))
+        //   .then(latLng => console.log('Success', latLng))
+        //   .catch(error => console.error('Error', error));
+    };
 
     const handleSubmit = async e =>{
         e.preventDefault()
@@ -102,7 +130,7 @@ function NewSpotForm(){
 
         history.push(`/spots/${newId}`)
     }
-
+    if(!isLoaded) return (<div>Loading...</div>)
     return(
         <section id="create-spot-section">
             <form id='new-spot-form'>
@@ -114,19 +142,53 @@ function NewSpotForm(){
                         reservation.
                     </p>
                 </div>
-                <label>
-                    <div>
-                    Country {(submitted && validationErrors.country.length)?<p className='form-error'>{validationErrors.country}</p>:(<></>)}
-                    </div>
-                    <input
-                        name="country"
-                        type='text'
-                        placeholder="Country"
-                        value={country}
-                        onChange={(e)=> setCountry(e.target.value)}
-                        />
-                </label>
-                <label>
+
+                <PlacesAutocomplete
+                    value={address}
+                    onChange={setAddress}
+                    onSelect={handleSelect}
+                    >
+                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                    <label className='autocomplete-label'>
+                        <div>
+                            Street Address {(submitted && validationErrors.address.length)?<p className='form-error'>{validationErrors.address}</p>:(<></>)}
+                        </div>
+                        <input
+                          {...getInputProps({
+                              placeholder: 'Address',
+                              className: 'location-search-input',
+                            })}
+                            />
+                        <div className="autocomplete-dropdown-container">
+                          {loading && <div>Loading...</div>}
+                          {!loading && suggestions.map(suggestion => {
+                              const className = 'suggestion-item'
+                            //   const className = suggestion.active
+                            //   ? 'suggestion-item--active'
+                            //   : 'suggestion-item';
+                              // inline style for demonstration purpose
+                              //   const style = suggestion.active
+                              //   ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                              //   : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                              return (
+                                  <div className='auto-dropdown'
+                                  {...getSuggestionItemProps(suggestion, {
+                                      className,
+                                      //   style,
+                                    })}
+                                    >
+                                <span>{suggestion.description}</span>
+                              </div>
+                            );
+                        })}
+                        </div>
+
+                    </label>
+                    )}
+                </PlacesAutocomplete>
+
+
+                {/* <label>
                     <div>
                     Street Address {(submitted && validationErrors.address.length)?<p className='form-error'>{validationErrors.address}</p>:(<></>)}
                     </div>
@@ -137,7 +199,7 @@ function NewSpotForm(){
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     />
-                </label>
+                </label> */}
                 <label>
                   <span>City</span> {(submitted && validationErrors.city.length)?<p className='form-error'>{validationErrors.city}</p>:(<></>)}
                   <input
@@ -159,6 +221,18 @@ function NewSpotForm(){
                     value={state}
                     onChange={(e) => setState(e.target.value)}
                     />
+                </label>
+                <label>
+                    <div>
+                    Country {(submitted && validationErrors.country.length)?<p className='form-error'>{validationErrors.country}</p>:(<></>)}
+                    </div>
+                    <input
+                        name="country"
+                        type='text'
+                        placeholder="Country"
+                        value={country}
+                        onChange={(e)=> setCountry(e.target.value)}
+                        />
                 </label>
                 {/* <div className='inline-block'>
                 <label>
@@ -184,7 +258,7 @@ function NewSpotForm(){
                     />
                 </label>
                 </div> */}
-                <label>
+                {/* <label>
                   Latitude
                   <input
                     name='lat'
@@ -203,7 +277,7 @@ function NewSpotForm(){
                     value={lng}
                     onChange={(e) => setLng(e.target.value)}
                     />
-                </label>
+                </label> */}
                 <div className='top-border'>
                     <h2>Describe your place to guests</h2>
                     <p>
