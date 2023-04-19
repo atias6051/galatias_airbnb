@@ -83,3 +83,37 @@
     padding: 10px;
     font-weight: bolder;
 }
+
+.suggestion-item{
+    padding: 3px;
+    background-color: rgb(255, 255, 255);
+}
+.suggestion-item:hover{
+    padding: 3px;
+    background-color: rgb(162, 62, 62);
+    cursor: pointer;
+}
+.suggestion-item--active{
+    padding: 3px;
+    background-color: brown;
+    cursor: pointer;
+}
+.autocomplete-label{
+    /* display: flex; */
+    position: relative;
+    /* border: 2px solid red; */
+}
+.autocomplete-dropdown-container {
+    position: absolute;
+    /* border: 1px solid red; */
+    border-radius: 5px;
+    top: calc(100% - 5px); /* adjust this value to add extra spacing if needed */
+    left: 2px;
+    width: 90%;
+  }
+
+  .auto-dropdown span{
+    padding: 5px;
+    background-color: red;
+    cursor: pointer;
+  }

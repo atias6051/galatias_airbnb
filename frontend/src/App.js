@@ -8,6 +8,7 @@ import SpotShow from "./components/SpotShow";
 import NewSpotForm from "./components/NewSpotForm";
 import CurrentUserSpots from "./components/CurrentUserSpots";
 import EditSpotForm from "./components/EditSpotForm";
+import Map from "./components/Map";
 
 function App() {
   const dispatch = useDispatch();
@@ -35,6 +36,9 @@ function App() {
           </Route>
           <Route path="/spots/:spotId">
             <SpotShow />
+          </Route>
+          <Route path="/map">
+            <Map />
           </Route>
           <Route>Page not found</Route>
         </Switch>
