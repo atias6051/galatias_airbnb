@@ -58,17 +58,18 @@ function Map(){
 
     if(!isLoaded || !spots) return <div>Loading...</div>
     return (
-        <>
+        <section id='map-sction'>
             <GoogleMap
                 zoom={9}
                 center={{ lat:37.8, lng: -122.2}}
                 mapContainerClassName="map-container"
                 >
                 {spots && Object.values(spots).map(spot=>(
-                    <Marker onClick={() => history.push(`/spots/${spot.id}`)} title={spot.name} position={{lat:spot.lat,lng:spot.lng}}/>
+                    <Marker animation='BOUNCE' onClick={() => history.push(`/spots/${spot.id}`)} title={spot.name} position={{lat:spot.lat,lng:spot.lng}}/>
                     ))}
             </GoogleMap>
-        </>
+            <button id='listToggle' onClick={()=>history.push('/')}>List View</button>
+        </section>
     )
 }
 

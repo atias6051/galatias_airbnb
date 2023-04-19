@@ -6,11 +6,26 @@
 }
 
 #all-spot-flex{
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+#mapToggle{
+  position: fixed;
+  bottom: 10px;
+  padding: 5px 15px;
+  color: white;
+  background-color: #021c1d;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+}
+#mapToggle:hover{
+  cursor: pointer;
+  background-color: white;
+  color: #021c1d;
+}
 
 @media (max-width: 1199px) {
   #all-spots-section {
