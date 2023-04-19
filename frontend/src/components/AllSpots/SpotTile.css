@@ -5,10 +5,11 @@
     width: 270px;
     border-radius: 8px;
     text-decoration: none;
-    box-shadow: 1px 5px 5px gray;
     transition: 0.25s ease-in-out;
+    box-shadow: 2px 5px 5px #c1c7be;
     color: black;
     padding-bottom: 10px;
+    font-size: 1em;
 }
 .spot-card *{
     text-decoration: none;
@@ -16,7 +17,7 @@
 }
 .spot-card:hover{
     transform: translateY(-3px);
-    box-shadow: 2px 5px 5px rgb(146, 195, 210);
+    box-shadow: 1px 5px 5px gray;
 }
 .spot-card-prev-image{
     width: 270px;
@@ -29,7 +30,7 @@
 .spot-preview-info{
     display: flex;
     justify-content: space-between;
-    padding: 5px;
+    padding: 5px 10px;
 }
 
 .delete-update-div{

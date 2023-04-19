@@ -11,9 +11,17 @@
     align-items: center;
     list-style: none;
     padding: 10px 35px;
-    border-bottom: 1px solid rgb(64, 64, 64);
-    background-color: rgba(238, 242, 255, 1);
+    /* border-bottom: 1px solid rgb(64, 64, 64); */
+    background-color:#F1F5EF;
+    border-bottom: none;
+    box-shadow: none;
+    transition: all 0.2s ease-out, box-shadow 0.2s ease-out;
 
+}
+
+.scroll{
+    box-shadow: inset 0px -4px 6px -3px #174C4F;
+    /* background-color:#dedede; */
 }
 
 .profile-dropdown{
@@ -43,16 +51,23 @@
 }
 
 #profile-button{
-    padding: 5px;
-    /* display: flex; */
-    /* justify-content: center; */
-    font-size: 2em;
-    border-radius: 15px;
-    background-color: azure;
-    border: 2px solid rgb(0, 85, 255);
+    /* padding: 5px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.9em;
+    height: 50px;
+    width: 50px;
+    /* border-radius: 15px; */
+    /* border: 2px solid red; */
+    border-radius: 50%;
+    border: none;
+
+    /* background-color: azure; */
+    /* border: 2px solid rgb(0, 85, 255); */
 }
 .logged-in{
-    color: rgb(31, 132, 132);
+    color: #174C4F;
 }
 .no-user{
     color: rgb(95, 116, 115);
@@ -60,27 +75,27 @@
 
 .create-spot-nav-link{
     text-decoration: none;
-    margin-right: 10px;
+    margin-right: 15px;
     font-weight: bolder;
     text-transform: uppercase;
-    color: black;
+    color:white;
 
-    /* border: 1px solid rgba(0, 85, 255,0.1); */
+    background-color: #174C4F;
+    border: 1px solid rgba(0, 85, 255,0.1);
     border-radius: 4px;
-    padding: 8px;
+    padding: 8px 15px;
+    transition: all 0.33s ease-in-out;
 }
 .create-spot-nav-link:hover{
-    animation: glow 1s ease-in-out infinite;
+    background-color: white;
+    color: #174C4F;
+    animation: glow 3s ease-in-out infinite;
 }
-/* .testClass{
-    color: red;
-    border: 1px dotted blue;
-    margin-right: 10px;
-} */
+
 
 #home-logo{
    position: relative;
-   top: 5px;
+   /* top: 5px; */
    height: 50px;
 }
 
@@ -98,12 +113,15 @@
 }
 @keyframes glow {
     0% {
-      box-shadow: 0 0 5px 0 rgba(101, 193, 255, 0.4);
+      box-shadow:inset 0 0 5px -5px #174C4F;
+      color: #174C4F;
     }
     50% {
-      box-shadow: 0 0 5px 5px rgba(101, 193, 255, 0.4);
+      box-shadow:inset 0 0 5px 1px #50a1a6;
+      color: #396668;
     }
     100% {
-        box-shadow: 0 0 5px 0 rgba(101, 193, 255, 0.4);
+        box-shadow:inset 0 0 5px -5px #174C4F;
+        color: #174C4F;
     }
   }
