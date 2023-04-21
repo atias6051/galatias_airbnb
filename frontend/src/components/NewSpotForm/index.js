@@ -35,6 +35,7 @@ function NewSpotForm(){
     const [image2, setImage2] = useState("");
     const [image3, setImage3] = useState("");
     const [image4, setImage4] = useState("");
+    const [images,setImages] = useState({})
 
     const [validationErrors, setValidationErros] = useState({})
     const [submitted,setSubmitted] = useState(false)
@@ -55,34 +56,40 @@ function NewSpotForm(){
             name,
             description,
             price,
-            previewImage,
-            image1,
-            image2,
-            image3,
-            image4
+            images
+            // previewImage,
+            // image1,
+            // image2,
+            // image3,
+            // image4
         }
         setValidationErros(spotFormValidation(spot))
-    },[country,address,city,state,lat,lng,description,name,price,previewImage,image1,image2,image3,image4])
+    },[country,address,city,state,lat,lng,description,name,price,previewImage,images])
 
     const handleSelect = async address => {
         setAddress(()=>address)
         const results = await geocodeByAddress(address)
         const latlng = await getLatLng(results[0])
         const addressArr = results[0].formatted_address.split(',').map(el=>el.trim())
-        console.log('--->',results[0])
-        console.log('--->',latlng)
-        console.log('--->',addressArr)
         setAddress(()=>addressArr[0])
         setCity(()=>addressArr[1])
         setState(()=>addressArr[2].split(' ')[0])
         setCountry(()=>addressArr[3])
         setLat(()=>latlng.lat)
         setLng(()=>latlng.lng)
-        // geocodeByAddress(address)
-        //   .then(results => getLatLng(results[0]))
-        //   .then(latLng => console.log('Success', latLng))
-        //   .catch(error => console.error('Error', error));
     };
+
+    const updateFiles = e =>{
+        const newObj = {
+            ...images,
+            [e.target.name]: e.target.files[0]
+        }
+        setImages(()=>newObj)
+    }
+
+    // useEffect(()=>{
+    //     console.log(images)
+    // },[images])
 
     const handleSubmit = async e =>{
         e.preventDefault()
@@ -101,14 +108,7 @@ function NewSpotForm(){
                 description,
                 price
             },
-            previewImage
-            ,
-            images: {
-                image1,
-                image2,
-                image3,
-                image4
-            }
+            images
         }
 
         const newId = await dispatch(createSpot(submitObj))
@@ -122,11 +122,12 @@ function NewSpotForm(){
         setDescription("");
         setName("");
         setPrice("");
-        setPreviewImage("");
-        setImage1("");
-        setImage2("");
-        setImage3("");
-        setImage4("");
+        setImages({})
+        // setPreviewImage("");
+        // setImage1("");
+        // setImage2("");
+        // setImage3("");
+        // setImage4("");
 
         history.push(`/spots/${newId}`)
     }
@@ -325,10 +326,30 @@ function NewSpotForm(){
                 <div className='top-border'>
                     <h2>Liven up your spot with photos</h2>
                     <p>
-                    Submit a link to at least one photo to publish your spot
+                    Choose Preview Image
                     </p>
                 </div>
+                {/* <label>Choose Preview Image</label> */}
+                <input className='block-label full-width file-input-button'
+                name="prev" type="file" accept="image/*" onChange={updateFiles}
+                aria-label="Testing" placeholder='testing testing'
+                />
+                {(submitted && validationErrors.previewImage.length)?<p className='form-error'>{validationErrors.previewImage}</p>:(<></>)}
+                <label>Upload more photos of your spot</label>
                 <input className='block-label full-width'
+                name="one" type="file" accept="image/*" onChange={updateFiles}
+                />
+                <input className='block-label full-width'
+                name="two" type="file" accept="image/*" onChange={updateFiles}
+                />
+                <input className='block-label full-width'
+                name="three" type="file" accept="image/*" onChange={updateFiles}
+                />
+                <input className='block-label full-width'
+                name="four" type="file" accept="image/*" onChange={updateFiles}
+                />
+
+                {/* <input className='block-label full-width'
                 name='previewImage'
                 type="text"
                 placeholder='Preview Image URL'
@@ -367,7 +388,7 @@ function NewSpotForm(){
                 value={image4}
                 onChange={e => setImage4(e.target.value)}
                 />
-                {(submitted && validationErrors.image4.length)?<p className='form-error'>{validationErrors.image4}</p>:(<></>)}
+                {(submitted && validationErrors.image4.length)?<p className='form-error'>{validationErrors.image4}</p>:(<></>)} */}
                 <button type='submit' className='standard-button form-butt' onClick={handleSubmit}>Create</button>
             </form>
 

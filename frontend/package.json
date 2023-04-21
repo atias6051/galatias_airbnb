@@ -9,6 +9,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "@types/googlemaps": "^3.43.3",
+    "aws-sdk": "^2.1360.0",
     "google-map-react": "^2.2.0",
     "js-cookie": "^3.0.1",
     "react": "^18.2.0",
