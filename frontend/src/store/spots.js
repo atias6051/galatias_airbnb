@@ -212,62 +212,86 @@ export const deleteSpot = spotId => async dispatch => {
 }
 
 export const editSpot = (submitObj,spotId) => async dispatch => {
-    const {newSpot,previewImage,images} = submitObj
+    const {newSpot, images} = submitObj
+    // const {newSpot,previewImage,images} = submitObj
+    console.log("IMAGESS______$$$$$_++++", images)
     const res = await csrfFetch(`/api/spots/${spotId}`,{
         method: 'PUT',
         body: JSON.stringify(newSpot)
     })
-    const updatedSpotRes = await csrfFetch(`/api/spots/${spotId}`)
-    const updatedSpot = await updatedSpotRes.json()
 
-    const {SpotImages} = updatedSpot;
-    for(let img of SpotImages){
-        await csrfFetch(`/api/spot-images/${img.id}`,{method:'DELETE'})
-    }
-    const prevRes = await csrfFetch(`/api/spots/${spotId}/images`,{
-        method: 'POST',
-        body: JSON.stringify({
-            url: previewImage,
-            preview: true
-        })
-    })
+    // const updatedSpotRes = await csrfFetch(`/api/spots/${spotId}`)
+    // const updatedSpot = await updatedSpotRes.json()
 
-    if(images.image1.length){
-        await csrfFetch(`/api/spots/${spotId}/images`,{
-            method: 'POST',
-            body: JSON.stringify({
-                url: images.image1,
-                preview: false
+    // const {SpotImages} = updatedSpot;
+    if(images.changed){
+        delete images.changed
+        let changes = Object.values(images).filter(el=>el.curr !== el.og)
+        console.log("Changes------------<>",changes)
+        for(let image of changes){
+            console.log("IMage")
+            let {url} = await csrfFetch('/api/spots/s3url').then(res=>res.json())
+            await csrfFetch(url, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+                body: image.curr,
             })
-        })
-    }
-    if(images.image2.length){
-        await csrfFetch(`/api/spots/${spotId}/images`,{
-            method: 'POST',
-            body: JSON.stringify({
-                url: images.image2,
-                preview: false
+            const updatedImage = await csrfFetch(`/api/spot-images/${image.id}`,{
+                method: 'PUT',
+                body: JSON.stringify({url : url.split('?')[0]})
             })
-        })
+        }
     }
-    if(images.image3.length){
-        await csrfFetch(`/api/spots/${spotId}/images`,{
-            method: 'POST',
-            body: JSON.stringify({
-                url: images.image3,
-                preview: false
-            })
-        })
-    }
-    if(images.image4.length){
-        await csrfFetch(`/api/spots/${spotId}/images`,{
-            method: 'POST',
-            body: JSON.stringify({
-                url: images.image4,
-                preview: false
-            })
-        })
-    }
+    // for(let img of SpotImages){
+    //     await csrfFetch(`/api/spot-images/${img.id}`,{method:'DELETE'})
+    // }
+
+    // const prevRes = await csrfFetch(`/api/spots/${spotId}/images`,{
+    //     method: 'POST',
+    //     body: JSON.stringify({
+    //         url: previewImage,
+    //         preview: true
+    //     })
+    // })
+
+    // if(images.image1.length){
+    //     await csrfFetch(`/api/spots/${spotId}/images`,{
+    //         method: 'POST',
+    //         body: JSON.stringify({
+    //             url: images.image1,
+    //             preview: false
+    //         })
+    //     })
+    // }
+    // if(images.image2.length){
+    //     await csrfFetch(`/api/spots/${spotId}/images`,{
+    //         method: 'POST',
+    //         body: JSON.stringify({
+    //             url: images.image2,
+    //             preview: false
+    //         })
+    //     })
+    // }
+    // if(images.image3.length){
+    //     await csrfFetch(`/api/spots/${spotId}/images`,{
+    //         method: 'POST',
+    //         body: JSON.stringify({
+    //             url: images.image3,
+    //             preview: false
+    //         })
+    //     })
+    // }
+    // if(images.image4.length){
+    //     await csrfFetch(`/api/spots/${spotId}/images`,{
+    //         method: 'POST',
+    //         body: JSON.stringify({
+    //             url: images.image4,
+    //             preview: false
+    //         })
+    //     })
+    // }
     const finalUpdatedSpotRes = await csrfFetch(`/api/spots/${spotId}`)
     const finalUpdatedSpot = await finalUpdatedSpotRes.json()
     dispatch(updateSpot(finalUpdatedSpot))

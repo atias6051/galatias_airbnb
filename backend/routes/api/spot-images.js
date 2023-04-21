@@ -41,4 +41,11 @@ router.delete('/:imageId', requireAuth, checkSpotImg, authorize, async(req,res)=
     res.json({message:"Successfully deleted",statusCode: 200})
 })
 
+router.put('/:imageId', requireAuth, checkSpotImg, authorize, async(req,res)=>{
+    const spotImg = await SpotImage.findByPk(req.params.imageId)
+    spotImg.url = req.body.url
+    await spotImg.save()
+    res.json(spotImg)
+})
+
 module.exports = router;
