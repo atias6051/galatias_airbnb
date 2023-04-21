@@ -5,6 +5,7 @@ const checkPicFormat = url =>{
 }
 
 export const spotFormValidation = (spot) => {
+    if(!spot) return
     try{const errors = {
         country: "",
         address: "",
@@ -22,6 +23,7 @@ export const spotFormValidation = (spot) => {
         image4: "",
         invalid: false
     }
+
     if(!spot.country.length){
         errors.country = 'Country is required'
         errors.invalid = true
