@@ -38,23 +38,15 @@ function Map(){
         console.error("Geolocation is not supported by this browser.");
       }
     }, []);
-    useEffect(()=>{
-        console.log("spots--->", spots)
-    },[spots])
+    // useEffect(()=>{
+    //     console.log("spots--->", spots)
+    // },[spots])
 
     const {isLoaded} = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_MAP_API_KEY,
         libraries:libraries
     });
 
-    // const handleSelect = async address => {
-    //     const results = await geocodeByAddress(address)
-    //     console.log(results[0])
-    //     geocodeByAddress(address)
-    //       .then(results => getLatLng(results[0]))
-    //       .then(latLng => console.log('Success', latLng))
-    //       .catch(error => console.error('Error', error));
-    // };
 
     if(!isLoaded || !spots) return <div>Loading...</div>
     return (

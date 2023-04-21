@@ -9,6 +9,7 @@ import NewSpotForm from "./components/NewSpotForm";
 import CurrentUserSpots from "./components/CurrentUserSpots";
 import EditSpotForm from "./components/EditSpotForm";
 import Map from "./components/Map";
+import TestComponent from "./components/TestComponent";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,6 +40,9 @@ function App() {
           </Route>
           <Route path="/map">
             <Map />
+          </Route>
+          <Route path='/test'>
+            <TestComponent/>
           </Route>
           <Route>Page not found</Route>
         </Switch>
