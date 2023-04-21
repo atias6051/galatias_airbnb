@@ -12,12 +12,12 @@ const user = require('../../db/models/user');
 const {generateUploadURL} = require('../../s3')
 
 
-const {
-  singleMulterUpload,
-  singlePublicFileUpload,
-  multipleMulterUpload,
-  multiplePublicFileUpload,
-} = require("../../awsS3");
+// const {
+//   singleMulterUpload,
+//   singlePublicFileUpload,
+//   multipleMulterUpload,
+//   multiplePublicFileUpload,
+// } = require("../../awsS3");
 
 
 
@@ -414,16 +414,16 @@ router.post('/:spotId/bookings', requireAuth, checkSpot, validateBooking, async(
 
 
 
-router.post('/uploadTest', singleMulterUpload("image"), async(req,res)=>{
-// router.post('/uploadTest', async(req,res)=>{
-    console.log("WE ARE HERE")
-    // const profileImageUrl = await singlePublicFileUpload(req.file);
-    // const file = req.file
-    // console.log("FILE______", file)
-    // console.log(file)
-    // console.log("res from s3--->",profileImageUrl)
-    res.send("Hello2!")
-})
+// router.post('/uploadTest', singleMulterUpload("image"), async(req,res)=>{
+// // router.post('/uploadTest', async(req,res)=>{
+//     console.log("WE ARE HERE")
+//     // const profileImageUrl = await singlePublicFileUpload(req.file);
+//     // const file = req.file
+//     // console.log("FILE______", file)
+//     // console.log(file)
+//     // console.log("res from s3--->",profileImageUrl)
+//     res.send("Hello2!")
+// })
 
 
 
