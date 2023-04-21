@@ -6,11 +6,12 @@ function TestComponent(){
 
     const [image,setImage] = useState(null)
     const [displayImg,setDisplayImage] = useState('')
+    const [testText,setTestText] = useState('')
 
     const updateFiles = e => {
         const files = e.target.files;
-        console.log(e.target.name)
-        console.log(files)
+        // console.log(e.target.name)
+        // console.log(files)
         setImage(()=>files[0]);
     };
 
