@@ -36,6 +36,26 @@ module.exports = {
         url: 'https://www.surforsound.com/media/3340016/surf-or-sound-realty-salty-dog-beach-house-869-exterior.jpg',
         preview: true
       },
+      {
+        spotId: 6,
+        url: 'https://i.imgur.com/XWFwtwA.jpg',
+        preview: true
+      },
+      {
+        spotId: 7,
+        url: 'https://www.surforsound.com/media/3340016/surf-or-sound-realty-salty-dog-beach-house-869-exterior.jpg',
+        preview: true
+      },
+      {
+        spotId: 8,
+        url: 'https://www.surforsound.com/media/3340016/surf-or-sound-realty-salty-dog-beach-house-869-exterior.jpg',
+        preview: true
+      },
+      {
+        spotId: 9,
+        url: 'https://www.surforsound.com/media/3340016/surf-or-sound-realty-salty-dog-beach-house-869-exterior.jpg',
+        preview: true
+      },
     ])
   },
 

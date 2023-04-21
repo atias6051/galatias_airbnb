@@ -4,11 +4,22 @@ const {Op} = require('sequelize')
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User,Spot,SpotImage,Review,ReviewImage,Booking, sequelize, Sequelize } = require('../../db/models');
-
+// const { multipleFilesUpload, multipleMulterUpload, retrievePrivateFile } = require("../../awsS3");
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const booking = require('../../db/models/booking');
 const user = require('../../db/models/user');
+const {generateUploadURL} = require('../../s3')
+
+
+const {
+  singleMulterUpload,
+  singlePublicFileUpload,
+  multipleMulterUpload,
+  multiplePublicFileUpload,
+} = require("../../awsS3");
+
+
 
 const checkSpot = async(req,res,next)=>{
     let spot = await Spot.findByPk(req.params.spotId)
@@ -76,6 +87,11 @@ const validateBooking = async(req,res,next) =>{
     return next()
 
 }
+
+router.get('/s3url',requireAuth, async(req,res)=>{
+    const url = await generateUploadURL()
+    res.send({url})
+})
 
 router.get('/test/:spotId',requireAuth,checkSpot,validateBooking,(req,res)=>{
     res.json({message: "so far so good!"})
@@ -386,5 +402,29 @@ router.post('/:spotId/bookings', requireAuth, checkSpot, validateBooking, async(
     }})
     res.json(booking)
 })
+
+
+// router.post('/uploadTest',multipleMulterUpload("images"), async(req,res)=>{
+    //     // const keys = await multipleFilesUpload({ files: req.files });
+    //     const files = req.files
+    //     console.log(files)
+    //     res.send("Hello!")
+    // })
+
+
+
+
+router.post('/uploadTest', singleMulterUpload("image"), async(req,res)=>{
+// router.post('/uploadTest', async(req,res)=>{
+    console.log("WE ARE HERE")
+    // const profileImageUrl = await singlePublicFileUpload(req.file);
+    // const file = req.file
+    // console.log("FILE______", file)
+    // console.log(file)
+    // console.log("res from s3--->",profileImageUrl)
+    res.send("Hello2!")
+})
+
+
 
 module.exports = router;

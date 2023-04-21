@@ -13,14 +13,14 @@ module.exports = {
     await queryInterface.bulkInsert(options,[
       {
         ownerId: 1,
-        address: '66 Falling Brook Rd',
-        city: 'Victor',
-        state: 'NY',
+        address: '2644 Monte Vista Ave',
+        city: 'El Cerito',
+        state: 'CA',
         country: 'United States',
-        lat: 43.879102,
-        lng: -103.459067,
-        name: 'House not on the beach',
-        description: "Beautiful place not on the beach. in fact, it's not even close.",
+        lat: 37.9378128,
+        lng: -122.3104638,
+        name: 'Chic Studio Retreat in El Cerrito',
+        description: "This stylish and cozy studio retreat in El Cerrito is the perfect home base for exploring the Bay Area. With a fully equipped kitchenette, a comfortable queen-size bed, and a modern bathroom, this studio is perfect for solo travelers or couples. Relax in the comfortable seating area with a book, or explore nearby restaurants, shops, and parks. San Francisco and Berkeley are just a short drive or train ride away. Book now and experience the best of Bay Area living in this chic studio retreat!",
         price: 130.00
       },
       {
@@ -29,8 +29,8 @@ module.exports = {
         city: 'Oakland',
         state: 'CA',
         country: 'United States',
-        lat: 23.879102,
-        lng: 3.459057,
+        lat: 37.8122886,
+        lng: -122.257368,
         name: 'Apartment for short term rent',
         description: "This apartment will signal to all of your friends and family that you failed miserably",
         price: 40.00
@@ -41,37 +41,84 @@ module.exports = {
         city: 'Tel-Aviv',
         state: 'Israel',
         country: 'Israel',
-        lat: 104.834102,
-        lng: -23.434067,
-        name: 'Private house close to the water park',
-        description: "Theres a water park like 2 blocks away. do you really need anything else?",
+        lat: 37.5602651,
+        lng: -122.26436,
+        name: 'Modern Waterfront Apartment in Foster City',
+        description: "This sleek and modern one-bedroom apartment is located on the waterfront in Foster City, offering stunning views of the Bay. With a fully equipped kitchen, comfortable living room, and a king-size bed, this apartment is perfect for couples or solo travelers. Take a morning walk along the scenic promenade, enjoy a workout in the on-site gym, or take a dip in the heated pool. Restaurants and shops are just a short walk away. Book now and experience the best of waterfront living in Foster City!",
         price: 155.00
       },
       {
         ownerId: 1,
-        address: '1500 Goose Way',
-        city: 'Paris',
-        state: 'France',
-        country: 'Rfance',
-        lat: 24.834102,
-        lng: -213.434067,
-        name: 'This is the same house you know from the US in France',
-        description: "No we do not have baguettes here. but theres unlimited tap water. youre welcome",
+        address: '1913 Meadow Rd',
+        city: 'Walnut Creek',
+        state: 'CA',
+        country: 'USA',
+        lat: 37.8805568,
+        lng: -122.057399,
+        name: 'Cozy Retreat in the Heart of Walnut Creek',
+        description: "This beautifully decorated one-bedroom apartment is located in the heart of Walnut Creek, just steps away from all the city has to offer. Featuring a fully equipped kitchen, comfortable living room, and a plush queen-size bed, this cozy retreat is perfect for couples or solo travelers. Enjoy a morning coffee on the balcony, or take a stroll to nearby restaurants, shops, and parks. Book now and experience the best of Walnut Creek living!",
         price: 155.00
       },
       {
         ownerId: 2,
-        address: '9 Bisbane Ln',
-        city: 'Brisbane',
-        state: 'Brisbane',
-        country: 'Australia',
-        lat: 224.834102,
-        lng: -13.434067,
-        name: 'Surfers place llc',
-        description: "Get your surf board and surf every day! and if you dont know how to surf look for the oakland apartment",
+        address: '25 Cam Encinas',
+        city: 'Orinda',
+        state: 'CA',
+        country: 'USA',
+        lat: 37.8756029,
+        lng: -122.180081,
+        name: 'Serene Escape in Orinda Hills',
+        description: "This stunning three-bedroom house nestled in the Orinda hills offers a serene escape from the hustle and bustle of the city. With a spacious living room, modern kitchen, and breathtaking views of the surrounding nature, this house is perfect for families or groups of friends. Enjoy a morning hike in nearby trails, relax on the large deck with a glass of wine, or curl up with a book in front of the fireplace. Book now and experience the tranquil beauty of Orinda!",
         price: 75.00
       },
-
+      {
+        ownerId: 4,
+        address: '555 Howard St',
+        city: 'San Francisco',
+        state: 'CA',
+        country: 'USA',
+        lat: 37.788090,
+        lng: -122.397650,
+        name: 'Luxurious Condo in Downtown SF',
+        description: "This luxurious condo in the heart of San Francisco features stunning city views and high-end amenities. With two spacious bedrooms, a fully equipped kitchen, and a comfortable living room, this condo is perfect for families or groups of friends. Enjoy the rooftop pool, fitness center, and lounge area, or explore the city's famous landmarks and restaurants just steps away. Book now and experience the best of San Francisco living!",
+        price: 350.00
+        },
+        {
+        ownerId: 2,
+        address: '4404 Oakhill Rd',
+        city: 'Oakland',
+        state: 'CA',
+        country: 'USA',
+        lat: 37.801233,
+        lng: -122.184230,
+        name: 'Bright and Modern Apartment in Oakland',
+        description: "This bright and modern one-bedroom apartment in Oakland is the perfect retreat for solo travelers or couples. With a fully equipped kitchen, comfortable living room, and a cozy bedroom with a queen-size bed, this apartment has everything you need for a comfortable stay. Enjoy a morning coffee on the balcony, or explore nearby restaurants, shops, and parks. Book now and experience the best of Oakland living!",
+        price: 120.00
+        },
+        {
+        ownerId: 3,
+        address: '3452 Adeline St',
+        city: 'Berkeley',
+        state: 'CA',
+        country: 'USA',
+        lat: 37.847660,
+        lng: -122.267280,
+        name: 'Charming Cottage in Berkeley',
+        description: "This charming cottage in Berkeley is the perfect escape for those looking for peace and tranquility. With a fully equipped kitchen, a comfortable living room, and a cozy bedroom with a queen-size bed, this cottage is perfect for solo travelers or couples. Relax on the private patio surrounded by lush greenery, or take a stroll to nearby cafes, restaurants, and shops. Book now and experience the best of Berkeley living!",
+        price: 95.00
+        },
+        {
+        ownerId: 5,
+        address: '1408 Miramonte Ave',
+        city: 'Mountain View',
+        state: 'CA',
+        country: 'USA',
+        lat: 37.380180,
+        lng: -122.078480,
+        name: 'Spacious House with a Pool in Mountain View',
+        description: "This spacious and modern house in Mountain View is perfect for families or groups of friends. With four comfortable bedrooms, a fully equipped kitchen, and a spacious living room, this house has everything you need for a comfortable stay. Enjoy the outdoor pool and hot tub, or take a short drive to nearby Silicon Valley landmarks and attractions. Book now and experience the best of Mountain View living!",
+        price: 450.00
+      }
     ])
   },
 
@@ -79,7 +126,7 @@ module.exports = {
     options.tableName = 'Spots'
     const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options,{
-      city: {[Op.in]: ['Victor','Oakland','Tel-Aviv','Paris','Brisbane']}
+      country: {[Op.in]: ['USA']}
     },{})
   }
 };
