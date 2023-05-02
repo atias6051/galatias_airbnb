@@ -17,28 +17,30 @@ function TestComponent(){
 
     const handleSubmit = async e =>{
         e.preventDefault()
-        const {url} = await csrfFetch('/api/spots/s3url').then(res=>res.json())
-        const res = await csrfFetch(url, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          body: image,
-        })
-        const imageUrl = url.split('?')[0]
-        setDisplayImage(()=>imageUrl)
+        // const {url} = await csrfFetch('/api/spots/s3url').then(res=>res.json())
+        // console.log(url)
+        // console.log(image)
+        // const res = await fetch(url, {
+        //   method: "PUT",
+        //   headers: {
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        //   body: image
+        // }).then(res=>res.json()).catch(err=>console.log("error!-->",err))
+        // const imageUrl = url.split('?')[0]
+        // setDisplayImage(()=>imageUrl)
 
-        setImage(()=>null)
+        // setImage(()=>null)
     }
     return (
         <div>
             <h1>Hello Tester</h1>
-            <form onSubmit={handleSubmit} encType="multipart/form-data">
+            {/* <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <input name="prev" accept="image/*" onChange={updateFiles} type="file" />
                 <input name="one" accept="image/*" onChange={updateFiles} type="file" />
                 <button type="submit">Submit</button>
             </form>
-            <img src={displayImg} />
+            <img src={displayImg} /> */}
         </div>
     )
 }

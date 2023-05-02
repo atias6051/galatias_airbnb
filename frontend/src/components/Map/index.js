@@ -57,7 +57,7 @@ function Map(){
                 mapContainerClassName="map-container"
                 >
                 {spots && Object.values(spots).map(spot=>(
-                    <Marker animation='BOUNCE' onClick={() => history.push(`/spots/${spot.id}`)} title={spot.name} position={{lat:spot.lat,lng:spot.lng}}/>
+                    <Marker key={spot.id} animation='BOUNCE' onClick={() => history.push(`/spots/${spot.id}`)} title={spot.name} position={{lat:spot.lat,lng:spot.lng}}/>
                     ))}
             </GoogleMap>
             <button id='listToggle' onClick={()=>history.push('/')}>List View</button>

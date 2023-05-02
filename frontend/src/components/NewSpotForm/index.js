@@ -1,9 +1,9 @@
 import {useState,useEffect} from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from 'react-router-dom';
-import { createSpot, getSingleSpot } from '../../store/spots';
+import { createSpot } from '../../store/spots';
 import { spotFormValidation } from '../../utils/FormValidations';
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import { useLoadScript } from "@react-google-maps/api";
 import PlacesAutocomplete, {
     geocodeByAddress,
     geocodeByPlaceId,
@@ -56,12 +56,11 @@ function NewSpotForm(){
             name,
             description,
             price,
-            images
-            // previewImage,
-            // image1,
-            // image2,
-            // image3,
-            // image4
+            previewImage,
+            image1,
+            image2,
+            image3,
+            image4
         }
         setValidationErros(spotFormValidation(spot))
     },[country,address,city,state,lat,lng,description,name,price,previewImage,images])
@@ -78,18 +77,6 @@ function NewSpotForm(){
         setLat(()=>latlng.lat)
         setLng(()=>latlng.lng)
     };
-
-    const updateFiles = e =>{
-        const newObj = {
-            ...images,
-            [e.target.name]: e.target.files[0]
-        }
-        setImages(()=>newObj)
-    }
-
-    // useEffect(()=>{
-    //     console.log(images)
-    // },[images])
 
     const handleSubmit = async e =>{
         e.preventDefault()
@@ -108,9 +95,11 @@ function NewSpotForm(){
                 description,
                 price
             },
-            images
+            images:{
+                preview: previewImage,
+                others: [image1,image2,image3,image4]
+            }
         }
-
         const newId = await dispatch(createSpot(submitObj))
 
         setCountry("");
@@ -123,11 +112,11 @@ function NewSpotForm(){
         setName("");
         setPrice("");
         setImages({})
-        // setPreviewImage("");
-        // setImage1("");
-        // setImage2("");
-        // setImage3("");
-        // setImage4("");
+        setPreviewImage("");
+        setImage1("");
+        setImage2("");
+        setImage3("");
+        setImage4("");
 
         history.push(`/spots/${newId}`)
     }
@@ -152,7 +141,7 @@ function NewSpotForm(){
                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                     <label className='autocomplete-label'>
                         <div>
-                            Street Address {(submitted && validationErrors.address.length)?<p className='form-error'>{validationErrors.address}</p>:(<></>)}
+                            Street Address {(submitted && validationErrors.address)?<p className='form-error'>{validationErrors.address}</p>:(<></>)}
                         </div>
                         <input
                           {...getInputProps({
@@ -162,17 +151,10 @@ function NewSpotForm(){
                             />
                         <div className="autocomplete-dropdown-container">
                           {loading && <div>Loading...</div>}
-                          {!loading && suggestions.map(suggestion => {
+                          {!loading && suggestions.map((suggestion,i) => {
                               const className = 'suggestion-item'
-                            //   const className = suggestion.active
-                            //   ? 'suggestion-item--active'
-                            //   : 'suggestion-item';
-                              // inline style for demonstration purpose
-                              //   const style = suggestion.active
-                              //   ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                              //   : { backgroundColor: '#ffffff', cursor: 'pointer' };
                               return (
-                                  <div className='auto-dropdown'
+                                  <div key={i} className='auto-dropdown'
                                   {...getSuggestionItemProps(suggestion, {
                                       className,
                                       //   style,
@@ -188,23 +170,9 @@ function NewSpotForm(){
                     )}
                 </PlacesAutocomplete>
 
-
-                {/* <label>
-                    <div>
-                    Street Address {(submitted && validationErrors.address.length)?<p className='form-error'>{validationErrors.address}</p>:(<></>)}
-                    </div>
-                  <input
-                    name="address"
-                    type='text'
-                    placeholder="Address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    />
-                </label> */}
                 <label>
-                  <span>City</span> {(submitted && validationErrors.city.length)?<p className='form-error'>{validationErrors.city}</p>:(<></>)}
+                  <span>City</span> {(submitted && validationErrors.city)?<p className='form-error'>{validationErrors.city}</p>:(<></>)}
                   <input
-                    // className='half-width'
                     name="city"
                     type='text'
                     placeholder="City"
@@ -213,9 +181,8 @@ function NewSpotForm(){
                     />
                 </label>
                 <label>
-                  State {(submitted && validationErrors.state.length)?<p className='form-error'>{validationErrors.state}</p>:(<></>)}
+                  State {(submitted && validationErrors.state)?<p className='form-error'>{validationErrors.state}</p>:(<></>)}
                   <input
-                    // className='half-width'
                     name="state"
                     type='text'
                     placeholder="State"
@@ -225,7 +192,7 @@ function NewSpotForm(){
                 </label>
                 <label>
                     <div>
-                    Country {(submitted && validationErrors.country.length)?<p className='form-error'>{validationErrors.country}</p>:(<></>)}
+                    Country {(submitted && validationErrors.country)?<p className='form-error'>{validationErrors.country}</p>:(<></>)}
                     </div>
                     <input
                         name="country"
@@ -235,50 +202,6 @@ function NewSpotForm(){
                         onChange={(e)=> setCountry(e.target.value)}
                         />
                 </label>
-                {/* <div className='inline-block'>
-                <label>
-                  <span>City</span> {(submitted && validationErrors.city.length)?<p className='form-error'>{validationErrors.city}</p>:(<></>)}
-                  <input
-                    className='half-width'
-                    name="city"
-                    type='text'
-                    placeholder="City"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    />,
-                </label>
-                <label>
-                  State {(submitted && validationErrors.state.length)?<p className='form-error'>{validationErrors.state}</p>:(<></>)}
-                  <input
-                    className='half-width'
-                    name="state"
-                    type='text'
-                    placeholder="State"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                    />
-                </label>
-                </div> */}
-                {/* <label>
-                  Latitude
-                  <input
-                    name='lat'
-                    type='number'
-                    placeholder="Latitude"
-                    value={lat}
-                    onChange={(e) => setLat(e.target.value)}
-                  />
-                </label>
-                <label>
-                  Longitude
-                  <input
-                    name='lng'
-                    type='number'
-                    placeholder="Longitude"
-                    value={lng}
-                    onChange={(e) => setLng(e.target.value)}
-                    />
-                </label> */}
                 <div className='top-border'>
                     <h2>Describe your place to guests</h2>
                     <p>
@@ -294,7 +217,7 @@ function NewSpotForm(){
                 onChange={(e) => setDescription(e.target.value)}
                 />
                 </div>
-                {(submitted && validationErrors.description.length)?<p className='form-error'>{validationErrors.description}</p>:(<></>)}
+                {(submitted && validationErrors.description)?<p className='form-error'>{validationErrors.description}</p>:(<></>)}
                 <div className='top-border'>
                     <h2>Create a title for your spot</h2>
                     <p>
@@ -310,7 +233,7 @@ function NewSpotForm(){
                 onChange={e=> setName(e.target.value)}
                 />
                 </div>
-                {(submitted && validationErrors.name.length)?<p className='form-error'>{validationErrors.name}</p>:(<></>)}
+                {(submitted && validationErrors.name)?<p className='form-error'>{validationErrors.name}</p>:(<></>)}
                 <div className='top-border'>
                     <h2>Set a base price for your spot</h2>
                     <p>
@@ -322,41 +245,22 @@ function NewSpotForm(){
                 value={price}
                 onChange={e=>setPrice(e.target.value)}
                 /></div>
-                {(submitted && validationErrors.price.length)?<p className='form-error'>{validationErrors.price}</p>:(<></>)}
+                {(submitted && validationErrors.price)?<p className='form-error'>{validationErrors.price}</p>:(<></>)}
                 <div className='top-border'>
                     <h2>Liven up your spot with photos</h2>
                     <p>
                     Choose Preview Image
                     </p>
                 </div>
-                {/* <label>Choose Preview Image</label> */}
-                <input className='block-label full-width file-input-button'
-                name="prev" type="file" accept="image/*" onChange={updateFiles}
-                aria-label="Testing" placeholder='testing testing'
-                />
-                {(submitted && validationErrors.previewImage.length)?<p className='form-error'>{validationErrors.previewImage}</p>:(<></>)}
-                <label>Upload more photos of your spot</label>
-                <input className='block-label full-width'
-                name="one" type="file" accept="image/*" onChange={updateFiles}
-                />
-                <input className='block-label full-width'
-                name="two" type="file" accept="image/*" onChange={updateFiles}
-                />
-                <input className='block-label full-width'
-                name="three" type="file" accept="image/*" onChange={updateFiles}
-                />
-                <input className='block-label full-width'
-                name="four" type="file" accept="image/*" onChange={updateFiles}
-                />
 
-                {/* <input className='block-label full-width'
+                <input className='block-label full-width'
                 name='previewImage'
                 type="text"
                 placeholder='Preview Image URL'
                 value={previewImage}
                 onChange={e=>setPreviewImage(e.target.value)}
                 />
-                {(submitted && validationErrors.previewImage.length)?<p className='form-error'>{validationErrors.previewImage}</p>:(<></>)}
+                {(submitted && validationErrors.previewImage)?<p className='form-error'>{validationErrors.previewImage}</p>:(<></>)}
                 <input className='block-label full-width'
                 name='image1'
                 type='text'
@@ -364,7 +268,7 @@ function NewSpotForm(){
                 value={image1}
                 onChange={e=>setImage1(e.target.value)}
                 />
-                {(submitted && validationErrors.image1.length)?<p className='form-error'>{validationErrors.image1}</p>:(<></>)}
+                {(submitted && validationErrors.image1)?<p className='form-error'>{validationErrors.image1}</p>:(<></>)}
                 <input className='block-label full-width'
                 name="image2"
                 type='text'
@@ -372,7 +276,7 @@ function NewSpotForm(){
                 value={image2}
                 onChange={e => setImage2(e.target.value)}
                 />
-                {(submitted && validationErrors.image2.length)?<p className='form-error'>{validationErrors.image2}</p>:(<></>)}
+                {(submitted && validationErrors.image2)?<p className='form-error'>{validationErrors.image2}</p>:(<></>)}
                 <input className='block-label full-width'
                 name='image3'
                 type='text'
@@ -380,7 +284,7 @@ function NewSpotForm(){
                 value={image3}
                 onChange={e => setImage3(e.target.value)}
                 />
-                {(submitted && validationErrors.image3.length)?<p className='form-error'>{validationErrors.image3}</p>:(<></>)}
+                {(submitted && validationErrors.image3)?<p className='form-error'>{validationErrors.image3}</p>:(<></>)}
                 <input className='block-label full-width'
                 name="image4"
                 type='text'
@@ -388,10 +292,9 @@ function NewSpotForm(){
                 value={image4}
                 onChange={e => setImage4(e.target.value)}
                 />
-                {(submitted && validationErrors.image4.length)?<p className='form-error'>{validationErrors.image4}</p>:(<></>)} */}
+                {(submitted && validationErrors.image4)?<p className='form-error'>{validationErrors.image4}</p>:(<></>)}
                 <button type='submit' className='standard-button form-butt' onClick={handleSubmit}>Create</button>
             </form>
-
         </section>
     )
 }
