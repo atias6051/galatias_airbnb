@@ -6,23 +6,24 @@ const checkPicFormat = url =>{
 
 export const spotFormValidation = (spot) => {
     if(!spot) return
-    try{const errors = {
-        country: "",
-        address: "",
-        city: "",
-        state: "",
-        lat: "",
-        lng: "",
-        description: "",
-        name: "",
-        price: "",
-        previewImage: "",
-        image1: "",
-        image2: "",
-        image3: "",
-        image4: "",
-        invalid: false
-    }
+    const errors = {invalid: false}
+    // try{const errors = {
+    //     country: "",
+    //     address: "",
+    //     city: "",
+    //     state: "",
+    //     lat: "",
+    //     lng: "",
+    //     description: "",
+    //     name: "",
+    //     price: "",
+    //     previewImage: "",
+    //     image1: "",
+    //     image2: "",
+    //     image3: "",
+    //     image4: "",
+    //     invalid: false
+    // }
 
     if(!spot.country.length){
         errors.country = 'Country is required'
@@ -83,35 +84,36 @@ export const spotFormValidation = (spot) => {
         errors.price = 'Price is required'
         errors.invalid = true
     }
-    // if(!spot.previewImage.length){
-    //     errors.previewImage = 'Preview image is required'
-    //     errors.invalid = true
-    // }
-    if(!spot.images.prev){
+    if(!spot.previewImage?.length){
         errors.previewImage = 'Preview image is required'
         errors.invalid = true
     }
-    // if(spot.previewImage.length && !checkPicFormat(spot.previewImage)){
-    //     errors.previewImage = 'Image URL must end in .png, .jpg, or .jpeg'
+    // if(!spot.images.prev){
+    //     errors.previewImage = 'Preview image is required'
     //     errors.invalid = true
     // }
-    // if(spot.image1.length && !checkPicFormat(spot.image1)){
-    //     errors.image1 = 'Image URL must end in .png, .jpg, or .jpeg'
-    //     errors.invalid = true
-    // }
-    // if(spot.image2.length && !checkPicFormat(spot.image2)){
-    //     errors.image2 = 'Image URL must end in .png, .jpg, or .jpeg'
-    //     errors.invalid = true
-    // }
-    // if(spot.image3.length && !checkPicFormat(spot.image3)){
-    //     errors.image3 = 'Image URL must end in .png, .jpg, or .jpeg'
-    //     errors.invalid = true
-    // }
-    // if(spot.image4.length && !checkPicFormat(spot.image4)){
-    //     errors.image4 = 'Image URL must end in .png, .jpg, or .jpeg'
-    //     errors.invalid = true
-    // }
-    return errors}catch{
-        console.log('errors from validation components')
+    if(spot.previewImage && !checkPicFormat(spot.previewImage)){
+        errors.previewImage = 'Image URL must end in .png, .jpg, or .jpeg'
+        errors.invalid = true
     }
+    if(spot.image1?.length && !checkPicFormat(spot.image1)){
+        errors.image1 = 'Image URL must end in .png, .jpg, or .jpeg'
+        errors.invalid = true
+    }
+    if(spot.image2?.length && !checkPicFormat(spot.image2)){
+        errors.image2 = 'Image URL must end in .png, .jpg, or .jpeg'
+        errors.invalid = true
+    }
+    if(spot.image3?.length && !checkPicFormat(spot.image3)){
+        errors.image3 = 'Image URL must end in .png, .jpg, or .jpeg'
+        errors.invalid = true
+    }
+    if(spot.image4?.length && !checkPicFormat(spot.image4)){
+        errors.image4 = 'Image URL must end in .png, .jpg, or .jpeg'
+        errors.invalid = true
+    }
+    return errors
+    // }catch{
+    //     console.log('errors from validation components')
+    // }
 }

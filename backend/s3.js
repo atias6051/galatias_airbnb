@@ -2,9 +2,7 @@ const aws = require('aws-sdk')
 const crypto = require('crypto')
 const { promisify } = require('util')
 require("dotenv").config();
-// import aws from 'aws-sdk'
-// import crypto from 'crypto'
-// import { promisify } from 'util'
+
 
 const randomBytes = promisify(crypto.randomBytes)
 
